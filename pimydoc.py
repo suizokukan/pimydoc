@@ -107,7 +107,7 @@ PROJECT_NAME = "Pimydoc"
 
 # see https://www.python.org/dev/peps/pep-0440/
 # e.g. 0.1.2.dev1, 0.0.6a0
-PROJECT_VERSION = "0.1.1"
+PROJECT_VERSION = "0.1.2"
 
 # constants required by Pypi.
 __projectname__ = PROJECT_NAME

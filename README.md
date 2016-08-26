@@ -16,23 +16,59 @@ changed.
 
 #(3) installation and tests
 
+    Don't forget : Katal is Python3 project, not a Python2 project !
+
 #(4) workflow
 
     $ pimydoc -h
     ... will display all known parameters.
     $ pimydoc --version
-    ... wil display the version of the current script.
+    ... will display the version of the current script.
 
 #(5) project's author and project's name
+
 Xavier Faure (suizokukan / 94.23.197.37) : suizokukan @T orange D@T fr
+
 Pimydoc : [P]lease [i]nsert my doc[umentation]
 
 #(6) arguments
+
+	usage: pimydoc.py [-h] [--sourcepath SOURCEPATH] [--docsrcfile DOCSRCFILE]
+	                  [--verbose {0,1,2}] [-vv] [-vvv] [--version] [--remove]
+	                  [--securitymode]
+
+	Pimydoc project, v.0.1.2
+
+	optional arguments:
+	  -h, --help            show this help message and exit
+	  --sourcepath SOURCEPATH
+	                        source path of the code (default:
+	                        /Users/admin/pimydoc)
+	  --docsrcfile DOCSRCFILE
+	                        source documentation file name (default:
+	                        /Users/admin/pimydoc/pimydoc)
+	  --verbose {0,1,2}     degree of verbosity of the output. 0 : only the error
+	                        messages; 1 : all messages except debug messages; 2 :
+	                        all messages, including debug messages; See also the
+	                        -vv and -vvv options. (default: 1)
+	  -vv                   verbosity set to 1 (all messages except debug
+	                        messages). (default: False)
+	  -vvv                  verbosity set to 2 (all messages, including debug
+	                        messages). (default: False)
+	  --version, -v         show the version and exit
+	  --remove, -r          Remove every pimydoc line in all the files of the
+	                        source directory (default: False)
+	  --securitymode, -s    Security mode : backup files created by Pimdoc are not
+	                        deleted (default: False)
 	
 #(7) history / future versions
 
-    - x.y.z        : pypy
-    - x.y.z        : unittests
+    - 0.1.4        : pypy
+    - 0.1.3        : unittests
+
+    + 0.1.2(alpha)
+    	• improved documentation
+    	• added the LICENSE.txt file
 
     + 0.1.1(alpha)
     	• added -vv, -vvv options
@@ -89,8 +125,10 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 
     + 0.0.0(alpha) : proof of concept
 
+#(8) technical details
 
-exit values :
+##(8.1) exit values :
+
     0 if success
     -1 if the documentation source file doesn't exist
     -2 if the documentation source file is ill-formed
