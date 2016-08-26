@@ -63,12 +63,25 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 	
 #(7) history / future versions
 
-    - 0.1.4        : pypy
-    - 0.1.3        : unittests
+    - 0.1.5        : pypy
+    - 0.1.4        : unittests
+
+    - 0.1.3(alpha) :
+        - pimydoc is callable from a Python script.
+        • in rewrite_new_targetfile(), FileNotFoundError is catched to prevent
+          an error by reading some special files like temp files.
+        • in pimydoc_a_file(), added a call to shutil.copystat() to correctly
+          set the permissions of the new target file.
+        • in DocumentationSource.__init__() added a test about the existence
+          of the file to be read.
+        • improved messages displayed by the script
+
+        • raw Pylint invocation : 10.0/10.0
 
     + 0.1.2(alpha)
     	• improved documentation
     	• added the LICENSE.txt file
+        • raw Pylint invocation : 10.0/10.0
 
     + 0.1.1(alpha)
     	• added -vv, -vvv options
@@ -129,6 +142,4 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 
 ##(8.1) exit values :
 
-    0 if success
-    -1 if the documentation source file doesn't exist
-    -2 if the documentation source file is ill-formed
+    See the file named "pimydoc", section "exit codes"

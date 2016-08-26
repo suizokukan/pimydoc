@@ -40,4 +40,7 @@ mais pas de lignes comme :
 ____| |
 ...car le dernier espace a été supprimé grâce à REMOVE_FINAL_SPACES_IN_NEW_DOCLINES .
 
-[Confer doc::002]
+[exit codes]
+ 0 if success
+-1 if the documentation source file doesn't exist
+-2 if the documentation source file is ill-formed

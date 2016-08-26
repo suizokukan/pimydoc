@@ -107,7 +107,7 @@ PROJECT_NAME = "Pimydoc"
 
 # see https://www.python.org/dev/peps/pep-0440/
 # e.g. 0.1.2.dev1, 0.0.6a0
-PROJECT_VERSION = "0.1.2"
+PROJECT_VERSION = "0.1.3"
 
 # constants required by Pypi.
 __projectname__ = PROJECT_NAME
@@ -124,7 +124,7 @@ __statuspypi__ = 'Development Status :: 3 - Alpha'
 ################################################################################
 class Settings(dict):
     """
-        selfttings class
+        Settings class
         ________________________________________________________________________
 
         Use this class to store the settings used by the pimydoc_a_file()
@@ -476,6 +476,11 @@ class DocumentationSource(dict):
         # a list of (str)
         self.errors = []
 
+        if not os.path.exists(filename):
+            logging.error("! Missing documentation source file '%s'", filename)
+            self.errors.append("Can't open '%s'", filename)
+            return
+
         # title(str) : a list of str
         dict.__init__(self)
 
@@ -586,7 +591,13 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
 
     # -------------------------------------------
     # let's read the content of the target file :
-    targetcontent = open(targetfile_name).readlines()
+    try:
+        targetcontent = open(targetfile_name).readlines()
+    except FileNotFoundError as error:
+        logging.error("! Can't read the content of the file '%s'", targetfile_name)
+        logging.error("! Error returned by Python : "+str(error))
+        logging.error("! Skipping this file.")
+        return
 
     # ---------------------------
     # fill <lines_with_trigger> :
@@ -611,6 +622,10 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
     # rewrite (new) target file with the new content :
     rewrite_new_targetfile(targetfile_name, just_remove_pimydoc_lines)
 
+    # -------------------------------------------------------------------
+    # give to the new target file the permission of the old target file :
+    shutil.copystat(targetfile_name+"_pimydoc_backup", targetfile_name)
+
     # --------------------
     # remove backup file :
     if securitymode is False:
@@ -619,42 +634,62 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
     logging.debug("--- done with %s", targetfile_name)
 
 #///////////////////////////////////////////////////////////////////////////////
+def pimydoc(args, just_remove_pimydoc_lines, docsrc):
+    """
+        pimydoc() function
+        ____________________________________________________________________
+
+        to be called from another script after args  has been filled : this
+        function doesn't read the arguments on the command line.
+        ____________________________________________________________________
+
+        no ARGUMENT, no RETURNED VALUE
+    """
+
+    number_of_files = 0
+    number_of_discarded_files = 0
+
+    for dirpath, _, filenames in os.walk(normpath(args.sourcepath)):
+        for filename in filenames:
+            number_of_files += 1
+            fullname = os.path.join(normpath(dirpath), filename)
+
+            if re.search(SETTINGS["REGEX_SOURCE_FILTER"], fullname):
+                if fullname == args.docsrcfile:
+                    logging.info("- discarded the documentation source file '%s'", fullname)
+                    number_of_discarded_files += 1
+                else:
+                    pimydoc_a_file(fullname, docsrc,
+                                   just_remove_pimydoc_lines, args.securitymode)
+            else:
+                number_of_discarded_files += 1
+                if args.vvv is True or args.verbose == 2:
+                    logging.info("- discarded '%s'", fullname)
+
+    logging.info("Read %s files, modified %s files, discarded %s files.",
+                 number_of_files,
+                 number_of_files - number_of_discarded_files,
+                 number_of_discarded_files)
+
+#///////////////////////////////////////////////////////////////////////////////
 def main():
     """
         main()
         ________________________________________________________________________
 
-        Main entry point.
+        Main entry point. Fill the args variable. Launch the pimydoc()
+        function.
+
+        exit codes
+        | |  0 if success
+        | | -1 if the documentation source file doesn't exist
+        | | -2 if the documentation source file is ill-formed
         ________________________________________________________________________
 
         no PARAMETER
 
         no RETURNED VALUE
     """
-    def main_go():
-        """
-            main_go() function
-            ____________________________________________________________________
-
-            Subfunction of go() : main loop
-            ____________________________________________________________________
-
-            no ARGUMENT, no RETURNED VALUE
-        """
-        for dirpath, _, filenames in os.walk(normpath(args.sourcepath)):
-            for filename in filenames:
-
-                fullname = os.path.join(normpath(dirpath), filename)
-
-                if re.search(SETTINGS["REGEX_SOURCE_FILTER"], fullname):
-                    if fullname == args.docsrcfile:
-                        logging.info("- discarded the documentation source file '%s'", fullname)
-                    else:
-                        pimydoc_a_file(fullname, docsrc,
-                                       just_remove_pimydoc_lines, args.securitymode)
-                else:
-                    logging.info("- discarded '%s'", fullname)
-
     args = CommandLineParser().get_args()
 
     if args.vv:
@@ -681,6 +716,7 @@ def main():
                       args.docsrcfile)
         logging.error("=== leaving pimydoc ===")
         sys.exit(-1)
+
     docsrc = DocumentationSource(args.docsrcfile)
 
     if len(docsrc.errors) > 0:
@@ -695,7 +731,7 @@ def main():
         logging.info("Let's remove every pimydoc line from the source directory.")
         just_remove_pimydoc_lines = True
 
-    main_go()
+    pimydoc(args, just_remove_pimydoc_lines, docsrc)
 
     logging.info("=== pimydoc : exit point ===")
 
