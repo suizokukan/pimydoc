@@ -63,11 +63,21 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 	
 #(7) history / future versions
 
-    - 0.1.5        : pypy
-    - 0.1.4        : unittests
+    - 0.1.6        : pypy
+    - 0.1.5        : unittests
 
-    - 0.1.3(alpha) :
-        - pimydoc is callable from a Python script.
+v 0.1.4(alpha) (2016_08_26) first version available on Pypi
+    • Pimydoc is now available on Pypi : https://pypi.python.org/pypi/Pimydoc
+
+    • improved the documentation
+
+    • raw Pylint invocation : 10.0/10.0 for all scripts.
+    • version packaged and sent to Pypi (https://pypi.python.org/pypi/Pimydoc)
+
+older versions :
+    
+    + 0.1.3(alpha) :
+        • pimydoc is callable from a Python script.
         • in rewrite_new_targetfile(), FileNotFoundError is catched to prevent
           an error by reading some special files like temp files.
         • in pimydoc_a_file(), added a call to shutil.copystat() to correctly
