@@ -1,0 +1,43 @@
+### pimydoc : documentation source file
+###
+### optional header [pimydoc]
+### [doc::001], [doc::002]
+### comments begin with "###"
+
+[pimydoc]
+### key : value (NOT key = value)
+REGEX_SOURCE_FILTER : .+py$
+
+### (?P<doctitle>) is mandatory
+REGEX_FIND_DOCTITLE : ^\[(?P<doctitle>.+)\]$
+
+### "|_|_" isn't the same as "|_|" (spaces are replaced by _)
+STARTSYMB_IN_DOC :| | 
+
+### expliquer le STARTSYMB
+REGEX_FIND_PIMYDOCLINE_IN_CODE : ^\s*STARTSYMB_IN_DOC
+
+PROFILE_PYTHON_SPACENBR_FOR_A_TAB : 4
+
+REMOVE_FINAL_SPACES_IN_NEW_DOCLINES : True
+
+###############################################################################
+[about the docsrc format]
+This text has been automatically added by Pimydoc.
+expliquer que on peut laisser un espace après STARTSYMB_IN_DOC
+
+Le fichier pimydoc est précis : 
+	STARTSYMB_IN_DOC :|_|_
+ne donnera pas le même résultat que :
+	STARTSYMB_IN_DOC :|_|
+
+La raison d'être de "REGEX_FIND_PIMYDOCLINE_IN_CODE2" est qu'avec
+REGEX_FIND_PIMYDOCLINE_IN_CODE on attrape des lignes telles que :
+____| |_doc
+____| |_doc_
+____| |_doc
+mais pas de lignes comme :
+____| |
+...car le dernier espace a été supprimé grâce à REMOVE_FINAL_SPACES_IN_NEW_DOCLINES .
+
+[Confer doc::002]
