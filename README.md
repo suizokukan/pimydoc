@@ -80,7 +80,8 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 
 - 0.1.7 : documentation/alpha -> beta
 
-v 0.1.6(alpha) a docline can be inside a commentary beginning with "#" or "//"
+v 0.1.6(alpha) (2016_08_28) a docline can be inside a commentary beginning
+                            with "#" or "//"
     • modified rewrite_new_targetfile() to handle doclines to be added after
       some symbols like "#" (Python) or "//" (C/C++). Added some tests to test
       this feature.
