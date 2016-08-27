@@ -107,7 +107,7 @@ PROJECT_NAME = "Pimydoc"
 
 # see https://www.python.org/dev/peps/pep-0440/
 # e.g. 0.1.2.dev1, 0.0.6a0
-PROJECT_VERSION = "0.1.5"
+PROJECT_VERSION = "0.1.6"
 
 # constants required by Pypi.
 __projectname__ = PROJECT_NAME
@@ -143,12 +143,6 @@ class Settings(dict):
                               See below for more details (docsrc format)
 
         STARTSYMB_IN_DOC__ESCAPE : re.escape(STARTSYMB_IN_DOC)
-
-        REGEX_FIND_PIMYDOCLINE_IN_CODE : string at the beginning of each line of
-                                         documentation added in the source files.
-
-        REGEX_FIND_PIMYDOCLINE_IN_CODE2: same as REGEX_FIND_PIMYDOCLINE_IN_CODE
-                                         but without final spaces.
 
         PROFILE_PYTHON_SPACENBR_FOR_A_TAB : (int) for Python files, number of
                                             spaces replacing a tab character.
@@ -205,8 +199,6 @@ class Settings(dict):
         self["REGEX_FIND_DOCTITLE"] = "^\\[(?P<name>.+)\\]$"
         self["STARTSYMB_IN_DOC"] = "| | "
         self["STARTSYMB_IN_DOC__ESCAPE"] = re.escape(self["STARTSYMB_IN_DOC"])
-        self["REGEX_FIND_PIMYDOCLINE_IN_CODE"] = "^\\s*" + self["STARTSYMB_IN_DOC"]
-        self["REGEX_FIND_PIMYDOCLINE_IN_CODE2"] = "^\\s*" + self["STARTSYMB_IN_DOC"]
         self["PROFILE_PYTHON_SPACENBR_FOR_A_TAB"] = 4
         self["REMOVE_FINAL_SPACES_IN_NEW_DOCLINES"] = "True"
 
@@ -245,23 +237,6 @@ class Settings(dict):
                     self["STARTSYMB_IN_DOC__ESCAPE"] = re.escape(self["STARTSYMB_IN_DOC"])
                     logging.debug("key 'STARTSYMB_IN_DOC__ESCAPE' set to '%s' (%s).",
                                   self["STARTSYMB_IN_DOC__ESCAPE"], type(self[key]))
-
-                elif key == "REGEX_FIND_PIMYDOCLINE_IN_CODE":
-                    value = value.replace("STARTSYMB_IN_DOC", SETTINGS["STARTSYMB_IN_DOC__ESCAPE"])
-                    self[key] = value.lstrip()
-
-                    self["REGEX_FIND_PIMYDOCLINE_IN_CODE2"] =\
-                        self["REGEX_FIND_PIMYDOCLINE_IN_CODE"][:]
-                    while self["REGEX_FIND_PIMYDOCLINE_IN_CODE2"].endswith("\\ "):
-                        self["REGEX_FIND_PIMYDOCLINE_IN_CODE2"] = \
-                            self["REGEX_FIND_PIMYDOCLINE_IN_CODE2"][:-2]
-
-                    self["REGEX_FIND_PIMYDOCLINE_IN_CODE"] = \
-                        re.compile(self["REGEX_FIND_PIMYDOCLINE_IN_CODE"])
-                    self["REGEX_FIND_PIMYDOCLINE_IN_CODE2"] = \
-                        re.compile(self["REGEX_FIND_PIMYDOCLINE_IN_CODE2"])
-
-                    logging.debug("key '%s' set to '%s' (%s).", key, self[key], type(self[key]))
 
                 elif key == "PROFILE_PYTHON_SPACENBR_FOR_A_TAB":
                     self[key] = int(value)
@@ -549,8 +524,8 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
         with open(targetfile_name, "w") as newtargetfile:
             for linenumber, line in enumerate(targetcontent):
 
-                if re.search(SETTINGS["REGEX_FIND_PIMYDOCLINE_IN_CODE"], line) is None and \
-                   re.search(SETTINGS["REGEX_FIND_PIMYDOCLINE_IN_CODE2"], line) is None:
+                # let's add a "normal" line, i.e. everything but a Pimydoc-docline.
+                if SETTINGS["STARTSYMB_IN_DOC"] not in line:
                     newtargetfile.write(line)
 
                 if linenumber in lines_with_trigger:
@@ -562,15 +537,18 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
                         logging.info("+ adding some doc in '%s'; doctitle='%s'",
                                      targetfile_name, doc_title)
 
+                        # what is the "startstring", i.e. the string in <line>
+                        # before the doc title ?
                         if profile == "Python":
+                            # todo : expliquer en quoi consiste le profile "Python"
                             _line = line.replace("\t",
                                                  " "*SETTINGS["PROFILE_PYTHON_SPACENBR_FOR_A_TAB"])
-                            spacenumber = _line.find(doc_title)
+                            startstring = _line[:_line.find(doc_title)]
                         else:
-                            spacenumber = line.find(doc_title)
+                            startstring = line[:line.find(doc_title)]
 
                         for docline in doc_content:
-                            new_docline = " "*spacenumber+SETTINGS["STARTSYMB_IN_DOC"]+docline
+                            new_docline = startstring+SETTINGS["STARTSYMB_IN_DOC"]+docline
                             if SETTINGS["REMOVE_FINAL_SPACES_IN_NEW_DOCLINES"] == "True":
                                 new_docline, new_doclinefeed = \
                                     remove_and_return_linefeed(new_docline)
@@ -678,7 +656,7 @@ def pimydoc(args, just_remove_pimydoc_lines, docsrc):
                 if args.vvv is True or args.verbose == 2:
                     logging.info("- discarded '%s'", fullname)
 
-    logging.info("Read %s files, modified %s files, discarded %s files.",
+    logging.info("Read %s file(s), modified %s file(s), discarded %s file(s).",
                  number_of_files,
                  number_of_files - number_of_discarded_files,
                  number_of_discarded_files)

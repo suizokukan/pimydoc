@@ -109,9 +109,17 @@ class Tests(unittest.TestCase):
         class Tests
 
         test0 : one Python file to be modified (with a docstring), one doctitle
-        test1 : one file to be modified (with a docstring), two doctitles
+                the file has just a doc title, no doc paragraph has to be updated.
+        test1 : one Python file to be modified (with a docstring), two doctitles
+                the file has just a doc title, no doc paragraph has to be updated.
         test2 : zero file to be modified (with a docstring) (not the same doctitles)
+                the file has just a doc title, no doc paragraph has to be updated.
         test3 : zero file to be modified (with a docstring) (empty documentation source file)
+                the file has just a doc title, no doc paragraph has to be updated.
+        test4 : a Python file with a doc paragraph (in a docstring) to be updated
+        test5 : a Python file with two doc paragraphs (in a docstring) to be updated
+        test6 : one Python file to be modified (with a commentary beginning by #)
+        test7 : two Python file to be modified (docstring + commentary beginning by #)
     """
 
     #///////////////////////////////////////////////////////////////////////////
@@ -126,8 +134,9 @@ class Tests(unittest.TestCase):
                 tests/test#n directory.
                 ________________________________________________________________
         """
-#        for test_number in [3,]:
-        for test_number in range(4):
+        # If you want to run only one test :
+        # for test_number in [8,]:
+        for test_number in range(8+1):
 
             test_path = os.path.join(os.getcwd(), "tests", "test"+str(test_number))
             shutil.copytree(os.path.join(test_path), PATH_TO_CURRENT_TEST)
@@ -138,9 +147,19 @@ class Tests(unittest.TestCase):
 
             computed_hash = dirhash(PATH_TO_CURRENT_TEST)
 
+            # if you want to display the computed hash, comment the test
+            # (self.assertEqual(...) and uncomment the following line :
+            #print(test_number, computed_hash)
+
             shutil.rmtree(PATH_TO_CURRENT_TEST)
 
-            self.assertEqual(computed_hash, {0:"b1f9b5a06ed96056006338876a4eff4e",
-                                             1:"2e8a0e5f87133d8d2a252e2dfcef096b",
-                                             2:"7d941b05a9903de24774b0a9f239ce14",
-                                             3:"15c89f259f92f019f5ef736ab7b4c4bc",}[test_number])
+            self.assertEqual(computed_hash, {0:"3e6ce8685299f20d79fcf12e50e34a33",
+                                             1:"8e3204c77be1637a326171f67307146e",
+                                             2:"6bfd068924de5a2c1dcfda3251392831",
+                                             3:"de2aab410c93d14460c9655114991657",
+                                             4:"9a71553228c3b8ca9c85e50ca766d37f",
+                                             5:"ca16119770f0309c09770233a47b78c1",
+                                             6:"e5d05f057e6b72e261c3a09bc2bd0317",
+                                             7:"e10aadbb96a51ea8be9f821000aa15c4",
+                                             8:"447a6203c5c4630b6fd96d7cff6260a6",
+                                            }[test_number])
