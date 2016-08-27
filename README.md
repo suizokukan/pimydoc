@@ -73,7 +73,7 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 	  --version, -v         show the version and exit
 	  --remove, -r          Remove every pimydoc line in all the files of the
 	                        source directory (default: False)
-	  --securitymode, -s    Security mode : backup files created by Pimdoc are not
+	  --securitymode, -s    Security mode : backup files created by Pimydoc are not
 	                        deleted (default: False)
 	
 #(7) history / future versions
@@ -81,6 +81,9 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 - 0.1.7 : documentation/alpha -> beta
 - 0.1.6 : # and //
 
+v 0.1.6(alpha) 
+    • improved the documentation
+    
 v 0.1.5(alpha) (2016_08_27) first unittests
     • add the "tests/" directory
     

@@ -109,9 +109,16 @@ class Tests(unittest.TestCase):
         class Tests
 
         test0 : one Python file to be modified (with a docstring), one doctitle
-        test1 : one file to be modified (with a docstring), two doctitles
+                the file has just a doc title, no doc paragraph has to be updated.
+        test1 : one Python file to be modified (with a docstring), two doctitles
+                the file has just a doc title, no doc paragraph has to be updated.
         test2 : zero file to be modified (with a docstring) (not the same doctitles)
+                the file has just a doc title, no doc paragraph has to be updated.
         test3 : zero file to be modified (with a docstring) (empty documentation source file)
+                the file has just a doc title, no doc paragraph has to be updated.
+        test4 : a Python file with a doc paragraph (in a docstring) to be updated
+        test5 : a Python file with two doc paragraphs (in a docstring) to be updated
+        test6 : one Python file to be modified (with a commentary beginning by #)
     """
 
     #///////////////////////////////////////////////////////////////////////////
@@ -126,8 +133,8 @@ class Tests(unittest.TestCase):
                 tests/test#n directory.
                 ________________________________________________________________
         """
-#        for test_number in [3,]:
-        for test_number in range(4):
+        for test_number in [6,]:
+#        for test_number in range(6+1):
 
             test_path = os.path.join(os.getcwd(), "tests", "test"+str(test_number))
             shutil.copytree(os.path.join(test_path), PATH_TO_CURRENT_TEST)
@@ -143,4 +150,8 @@ class Tests(unittest.TestCase):
             self.assertEqual(computed_hash, {0:"b1f9b5a06ed96056006338876a4eff4e",
                                              1:"2e8a0e5f87133d8d2a252e2dfcef096b",
                                              2:"7d941b05a9903de24774b0a9f239ce14",
-                                             3:"15c89f259f92f019f5ef736ab7b4c4bc",}[test_number])
+                                             3:"15c89f259f92f019f5ef736ab7b4c4bc",
+                                             4:"d733b9d6932b1e252501e4f7ee488696",
+                                             5:"964f14a5a375199d0a29d27e0d5345c6",
+                                             6:"???",
+                                            }[test_number])

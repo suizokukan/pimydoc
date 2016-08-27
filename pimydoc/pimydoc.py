@@ -107,7 +107,7 @@ PROJECT_NAME = "Pimydoc"
 
 # see https://www.python.org/dev/peps/pep-0440/
 # e.g. 0.1.2.dev1, 0.0.6a0
-PROJECT_VERSION = "0.1.5"
+PROJECT_VERSION = "0.1.6"
 
 # constants required by Pypi.
 __projectname__ = PROJECT_NAME
@@ -563,6 +563,7 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
                                      targetfile_name, doc_title)
 
                         if profile == "Python":
+                            # todo : expliquer en quoi consiste le profile "Python"
                             _line = line.replace("\t",
                                                  " "*SETTINGS["PROFILE_PYTHON_SPACENBR_FOR_A_TAB"])
                             spacenumber = _line.find(doc_title)
