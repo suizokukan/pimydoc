@@ -54,9 +54,9 @@ def remove_and_return_linefeed(src):
 
         Remove the linefeed characters from the end of (str)src.
         This function recognizes three kinds of linefeed characters :
-        o the Linux one (\n)
-        o the Windows one (\r\n)
-        o the ancient OSX one (\r)
+        • the Linux one (\n)
+        • the Windows one (\r\n)
+        • the ancient OSX one (\r)
         ________________________________________________________________________
 
         PARAMETER : (str)src, the source string to be cut
@@ -71,7 +71,7 @@ def remove_and_return_linefeed(src):
     elif src.endswith("\r"):
         return src[:-1], "\r"
     else:
-        return src
+        return src, ""
 
 #///////////////////////////////////////////////////////////////////////////////
 def normpath(_path):
@@ -107,7 +107,7 @@ PROJECT_NAME = "Pimydoc"
 
 # see https://www.python.org/dev/peps/pep-0440/
 # e.g. 0.1.2.dev1, 0.0.6a0
-PROJECT_VERSION = "0.1.4"
+PROJECT_VERSION = "0.1.5"
 
 # constants required by Pypi.
 __projectname__ = PROJECT_NAME
@@ -402,6 +402,8 @@ class DocumentationSource(dict):
     #///////////////////////////////////////////////////////////////////////////
     def __init__(self, filename):
         """
+            DocumentationSource.__init__()
+
             Initialize self and SETTINGS from the content of filename.
         """
 
@@ -478,7 +480,7 @@ class DocumentationSource(dict):
 
         if not os.path.exists(filename):
             logging.error("! Missing documentation source file '%s'", filename)
-            self.errors.append("Can't open '%s'", filename)
+            self.errors.append("Can't open '{0}'".format(filename))
             return
 
         # title(str) : a list of str
@@ -572,6 +574,15 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
                             if SETTINGS["REMOVE_FINAL_SPACES_IN_NEW_DOCLINES"] == "True":
                                 new_docline, new_doclinefeed = \
                                     remove_and_return_linefeed(new_docline)
+                                if new_doclinefeed == "":
+                                    # todo : expliquer que si une docline ne se termine pas par un
+                                    # linefeed
+                                    # (=parce que cette docline apparaît comme la dernière ligne du
+                                    # fichier
+                                    #   documentation source file, alors on est quand même obligé
+                                    # de considérer
+                                    #  que la docline forme une ligne (=texte + linefeed)
+                                    new_doclinefeed = "\n"
                                 new_docline = new_docline.rstrip()
                                 new_docline += new_doclinefeed
                             newtargetfile.write(new_docline)
@@ -592,7 +603,8 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
     # -------------------------------------------
     # let's read the content of the target file :
     try:
-        targetcontent = open(targetfile_name).readlines()
+        with open(targetfile_name, 'r') as target_file:
+            targetcontent = target_file.readlines()
     except FileNotFoundError as error:
         logging.error("! Can't read the content of the file '%s'", targetfile_name)
         logging.error("! Error returned by Python : "+str(error))
@@ -644,8 +656,8 @@ def pimydoc(args, just_remove_pimydoc_lines, docsrc):
         ____________________________________________________________________
 
         no ARGUMENT, no RETURNED VALUE
+        todo
     """
-
     number_of_files = 0
     number_of_discarded_files = 0
 

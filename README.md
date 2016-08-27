@@ -16,7 +16,22 @@ changed.
 
 #(3) installation and tests
 
-    Don't forget : Katal is Python3 project, not a Python2 project !
+    Don't forget : Pimydoc is Python3 project, not a Python2 project !
+
+    $ pip3 install pimydoc
+
+    or
+
+    $ wget https://raw.githubusercontent.com/suizokukan/pimydoc/master/pimydoc/pimydoc.py
+    Since pimydoc.py is a stand-alone file, you may place this file in the target directory.
+
+    How to run the tests :
+    
+    $ python -m unittest tests/tests.py
+
+    or
+    
+    $ nosetests
 
 #(4) workflow
 
@@ -63,9 +78,28 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 	
 #(7) history / future versions
 
-    - 0.1.6        : pypy
-    - 0.1.5        : unittests
+- 0.1.7 : documentation/alpha -> beta
+- 0.1.6 : # and //
 
+v 0.1.5(alpha) (2016_08_27) first unittests
+    • add the "tests/" directory
+    
+    • fixed a bug in DocumentationSource.__init__() : .format() syntax has to
+      be used anywhere except for logging messages.
+    • fixed a bug in remove_and_return_linefeed() : I forgot to return an empty
+      linefeed if the last characters are not "\n", "\r" or "\r\n"
+    • fixed a bug in rewrite_new_targetfile() : if a docline doesn't end with
+      a linefeed character, we have to add it manually in the target files.
+    • fixed a bug in rewrite_new_targetfile() : the file opened is now explicitly
+      closed.
+    • added the README.rst file : the file is required by Pypi and should have
+      been added since v 0.1.4.
+    • documentation improved
+
+    - unittests : 1 test (passed) 
+    - raw Pylint invocation : 10.0/10.0 for all scripts.
+    - version packaged and sent to Pypi (https://pypi.python.org/pypi/Pimydoc)
+ 
 v 0.1.4(alpha) (2016_08_26) first version available on Pypi
     • Pimydoc is now available on Pypi : https://pypi.python.org/pypi/Pimydoc
 
