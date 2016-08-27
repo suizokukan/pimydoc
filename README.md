@@ -78,7 +78,8 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 	
 #(7) history / future versions
 
-- 0.1.7 : documentation/alpha -> beta
+- 0.1.7(beta) (2016_08_XX) : documentation/project in beta phase
+    • added tests/test8/ which should have been added in 0.1.6
 
 v 0.1.6(alpha) (2016_08_28) a docline can be inside a commentary beginning
                             with "#" or "//"
