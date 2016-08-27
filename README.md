@@ -79,10 +79,19 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 #(7) history / future versions
 
 - 0.1.7 : documentation/alpha -> beta
-- 0.1.6 : # and //
 
-v 0.1.6(alpha) 
+v 0.1.6(alpha) a docline can be inside a commentary beginning with "#" or "//"
+    • modified rewrite_new_targetfile() to handle doclines to be added after
+      some symbols like "#" (Python) or "//" (C/C++). Added some tests to test
+      this feature.
+
+    • simplified the documentation source file : no more "REGEX_FIND_PIMYDOC*"
+      keys. 
     • improved the documentation
+
+    • unittests : 1 test (passed) 
+    • raw Pylint invocation : 10.0/10.0 for all scripts.
+    • version packaged and sent to Pypi (https://pypi.python.org/pypi/Pimydoc)
     
 v 0.1.5(alpha) (2016_08_27) first unittests
     • add the "tests/" directory
