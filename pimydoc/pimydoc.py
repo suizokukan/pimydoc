@@ -107,7 +107,7 @@ PROJECT_NAME = "Pimydoc"
 
 # see https://www.python.org/dev/peps/pep-0440/
 # e.g. 0.1.2.dev1, 0.0.6a0
-PROJECT_VERSION = "0.1.6"
+PROJECT_VERSION = "0.1.7"
 
 # constants required by Pypi.
 __projectname__ = PROJECT_NAME
@@ -438,7 +438,12 @@ class DocumentationSource(dict):
                         stop = True
 
                     if new_title in self:
-                        logging.error("! title '%s' already defined !", new_title)
+                        logging.error("! doctitle '%s' already defined !", new_title)
+                        self.errors.append("Doctitle '{0}' already present " \
+                                           "in the documentation source file." \
+                                           "See line '{1}' (#{2})".format(new_title,
+                                                                          line, linenumber))
+
                     self[new_title] = []
                     current_title = new_title
 
@@ -541,8 +546,9 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
                         # before the doc title ?
                         if profile == "Python":
                             # todo : expliquer en quoi consiste le profile "Python"
-                            _line = line.replace("\t",
-                                                 " "*SETTINGS["PROFILE_PYTHON_SPACENBR_FOR_A_TAB"])
+                            if SETTINGS["PROFILE_PYTHON_SPACENBR_FOR_A_TAB"]>0:
+                                _line = line.replace("\t",
+                                                     " "*SETTINGS["PROFILE_PYTHON_SPACENBR_FOR_A_TAB"])
                             startstring = _line[:_line.find(doc_title)]
                         else:
                             startstring = line[:line.find(doc_title)]

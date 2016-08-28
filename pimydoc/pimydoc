@@ -14,11 +14,7 @@ REGEX_FIND_DOCTITLE : ^\[(?P<doctitle>.+)\]$
 ### "|_|_" isn't the same as "|_|" (spaces are replaced by _)
 STARTSYMB_IN_DOC :| | 
 
-### expliquer le STARTSYMB
-REGEX_FIND_PIMYDOCLINE_IN_CODE__DEFAULT : ^\s*STARTSYMB_IN_DOC
-REGEX_FIND_PIMYDOCLINE_IN_CODE__PYTHON : (^\s*STARTSYMB_IN_DOC)|(^\s*\#\s*STARTSYMB_IN_DOC)
-REGEX_FIND_PIMYDOCLINE_IN_CODE__CPP : (^\s*STARTSYMB_IN_DOC)|(^\s*\\/\\/*STARTSYMB_IN_DOC)
-
+### 0 if the tabulations are not replaced by spaces in doclines.
 PROFILE_PYTHON_SPACENBR_FOR_A_TAB : 4
 
 REMOVE_FINAL_SPACES_IN_NEW_DOCLINES : True
