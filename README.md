@@ -72,18 +72,21 @@ REGEX_SOURCE_FILTER : .+cpp$|.+h$
 Beware, the format string "*.py" is not supported.
 
 #### REGEX_FIND_DOCTITLE : ^\[(?P<doctitle>.+)\]$
-Python regex describing in the documentation source file the way the doctiles
-appear. The group name (?P<doctitle>) is mandatory.
+Python regex describing in the documentation source file, NOT in the source files
+the the way the doctiles appear. The group name (?P<doctitle>) is mandatory.
 
 Examples :
 
 REGEX_FIND_DOCTITLE : ^\[(?P<doctitle>.+)\]$
+
 ... if doctitles appear as "[mydoctitle]" in the documentation source file.
 
 REGEX_FIND_DOCTITLE : ^\<(?P<doctitle>.+)\>$
+
 ... if doctitles appear as "<mydoctitle>" in the documentation source file.
 
 #### STARTSYMB_IN_DOC :| |
+
 Characters appearing in source files juste before a doc line.
 The STARTSYMB_IN_DOC characters may be preceded by other characters, like
 spaces, "#", "//", and so on :
@@ -129,8 +132,32 @@ REMOVE_FINAL_SPACES_IN_NEW_DOCLINES : True
 REMOVE_FINAL_SPACES_IN_NEW_DOCLINES : False
         
 ## how to add doctitles in the source directory
-todo
+Follow the format described in REGEX_FIND_DOCTITLE, e.g. "[ressource::001]".
+The documentation (the doclines) is added by inserting the doclines after the
+line containing the doctitle.
 
+By example :
+
+    -> inside "pimydoc", documentation source file.
+    [ressource::001]
+    An interesting ressource.
+
+    -> inside a source file :
+    def foo(arg):
+        """
+           ressource::001
+        """
+        print("...")
+
+The source file becomes :
+
+    def foo(arg):
+        """
+           ressource::001
+           An interesting ressource.
+        """
+        print("...")
+    
 ## profiles
 According to the extension of the files read in the source directories, Pimydoc
 slightly changes the way it adds and updates the documentation. The known
@@ -249,7 +276,7 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 	
 #(7) history / future versions
 
-##v 0.1.7(beta) (2016_08_29) : documentation/project in beta phase
+##v 0.1.7(beta) (2016_08_29) : documentation/project in beta stage.
 
     • improved the documentation
 
