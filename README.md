@@ -7,6 +7,36 @@ than the ones installed with Python3.
 
 Insert documentation in text files and update it.
 
+Example :
+
+    -> inside "pimydoc", documentation source file.
+    [pimydoc]
+    STARTSYMB_IN_DOC :¤ 
+    [ressource::001]
+    An interesting ressource.
+    [ressource::002]
+    Another interesting ressource.
+
+    -> inside a source file :
+    def foo(arg):
+        """
+           ressource::001
+        """
+        # ressource::002
+        print("...")
+
+The source file becomes :
+
+    def foo(arg):
+        """
+           ressource::001
+           ¤ An interesting ressource.
+        """
+        # ressource::002
+        # ¤ another interesting ressource.
+        print("...")
+
+    
 #(2) purpose
 
 Pimydoc inserts in source files the text paragraphs stored in "pimydoc", the
@@ -132,9 +162,12 @@ REMOVE_FINAL_SPACES_IN_NEW_DOCLINES : True
 REMOVE_FINAL_SPACES_IN_NEW_DOCLINES : False
         
 ## how to add doctitles in the source directory
-Follow the format described in REGEX_FIND_DOCTITLE, e.g. "[ressource::001]".
-The documentation (the doclines) is added by inserting the doclines after the
-line containing the doctitle.
+You juste have to add on a line the name of a doctitle (do **not follow the
+format described in REGEX_FIND_DOCTITLE, e.g. "[ressource::001]"**, this
+regex being used only in the documentation source file).
+The documentation (the doclines) is added by inserting the doclines **after the
+line containing the doctitle**. *Pimydoc will add before each docline the same
+characters appearing before the doctitle.*
 
 By example :
 
@@ -154,7 +187,7 @@ The source file becomes :
     def foo(arg):
         """
            ressource::001
-           An interesting ressource.
+           ¤ An interesting ressource.
         """
         print("...")
     
