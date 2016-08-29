@@ -546,7 +546,6 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
                         # what is the "startstring", i.e. the string in <line>
                         # before the doc title ?
                         if profile == "Python":
-                            # todo : expliquer en quoi consiste le profile "Python"
                             if SETTINGS["PROFILE_PYTHON_SPACENBR_FOR_A_TAB"] > 0:
                                 _line = \
                                   line.replace("\t",
