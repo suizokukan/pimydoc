@@ -381,76 +381,6 @@ class DocumentationSource(dict):
 
             Initialize self and SETTINGS from the content of filename.
         """
-
-        def newline(line, linenumber, location, current_title):
-            """
-                newline() :  a subfunction of DocumentationSource.__init__()
-                ________________________________________________________________
-
-                Add the line to the settings or the current doc title.
-                ________________________________________________________________
-
-                ARGUMENTS :
-                • line          : (str) line to be added
-                • linenumber    : (int) line number in the source file
-                • location      : (str) see __init__() : None, "doc", ...
-                • current_title : (str) the current doc title.
-
-                RETURNED VALUE : ((str)location, (str)current_title, (bool)stop)
-            """
-            stop = False
-
-            find_title = re.search(SETTINGS["REGEX_FIND_DOCTITLE"], line)
-
-            if find_title is not None:
-                location = "doc"
-                logging.debug("beginning of the doc at line '%s' (#%s)",
-                              line.strip(), linenumber)
-
-            if location == "settings":
-                separator = line.find(":")
-
-                if separator >= 0:
-                    if SETTINGS.init_from_line(line) != 0:
-                        logging.error("! An error occured : " \
-                                      "stop reading the documentation source file.")
-                        self.errors.append("Can't read the " \
-                                           "line '{0}' (#{1})".format(line, linenumber))
-                        stop = True
-                elif len(line.strip()) > 0:
-                    logging.error("! (reading the documentation source file) " \
-                                  " Can't read the following line : '%s' (#%s)",
-                                  line, linenumber)
-
-            elif location == "doc":
-
-                if find_title is None:
-                    self[current_title].append(line)
-                else:
-                    try:
-                        new_title = find_title.group("doctitle")
-                    except IndexError as error:
-                        logging.error("! An error occured : " \
-                                      "stop reading the documentation source file.")
-                        self.errors.append("Can't read the line '{0}' (#{1}) : " \
-                                           "ill-formed doctitle".format(line, linenumber))
-                        self.errors.append("Error returned by Python :"+str(error))
-                        stop = True
-
-                    if new_title in self:
-                        logging.error("! doctitle '%s' already defined !", new_title)
-                        self.errors.append("Doctitle '{0}' already present " \
-                                           "in the documentation source file." \
-                                           "See line '{1}' (#{2})".format(new_title,
-                                                                          line, linenumber))
-
-                    self[new_title] = []
-                    current_title = new_title
-
-                    logging.debug("found a new title : '%s' (#%s)", new_title, linenumber)
-
-            return location, current_title, stop
-
         # ---------------------------------------------
         # entry point of DocumentationSource.__init__()
         logging.debug("DocumentationSource.__init__() : %s", filename)
@@ -483,12 +413,83 @@ class DocumentationSource(dict):
                     logging.debug("settings detected by reading the '%s' line (#%s).",
                                   line.strip(), linenumber)
                 else:
-                    location, current_title, stop = newline(line, linenumber,
-                                                            location, current_title)
+                    location, current_title, stop = self.newline(line, linenumber,
+                                                                 location, current_title)
 
                 if stop:
                     break
 
+    #///////////////////////////////////////////////////////////////////////////
+    def newline(self, line, linenumber, location, current_title):
+        """
+            DocumentationSource.newline() :  a subfunction of 
+                                             DocumentationSource.__init__()
+            ________________________________________________________________
+
+            Add the line to the settings or the current doc title.
+            ________________________________________________________________
+
+            ARGUMENTS :
+            • line          : (str) line to be added
+            • linenumber    : (int) line number in the source file
+            • location      : (str) see __init__() : None, "doc", ...
+            • current_title : (str) the current doc title.
+
+            RETURNED VALUE : ((str)location, (str)current_title, (bool)stop)
+        """
+        stop = False
+
+        find_title = re.search(SETTINGS["REGEX_FIND_DOCTITLE"], line)
+
+        if find_title is not None:
+            location = "doc"
+            logging.debug("beginning of the doc at line '%s' (#%s)",
+                          line.strip(), linenumber)
+
+        if location == "settings":
+            separator = line.find(":")
+
+            if separator >= 0:
+                if SETTINGS.init_from_line(line) != 0:
+                    logging.error("! An error occured : " \
+                                  "stop reading the documentation source file.")
+                    self.errors.append("Can't read the " \
+                                       "line '{0}' (#{1})".format(line, linenumber))
+                    stop = True
+            elif len(line.strip()) > 0:
+                logging.error("! (reading the documentation source file) " \
+                              " Can't read the following line : '%s' (#%s)",
+                              line, linenumber)
+
+        elif location == "doc":
+
+            if find_title is None:
+                self[current_title].append(line)
+            else:
+                try:
+                    new_title = find_title.group("doctitle")
+                except IndexError as error:
+                    logging.error("! An error occured : " \
+                                  "stop reading the documentation source file.")
+                    self.errors.append("Can't read the line '{0}' (#{1}) : " \
+                                       "ill-formed doctitle".format(line, linenumber))
+                    self.errors.append("Error returned by Python :"+str(error))
+                    stop = True
+
+                if new_title in self:
+                    logging.error("! doctitle '%s' already defined !", new_title)
+                    self.errors.append("Doctitle '{0}' already present " \
+                                       "in the documentation source file." \
+                                       "See line '{1}' (#{2})".format(new_title,
+                                                                      line, linenumber))
+
+                self[new_title] = []
+                current_title = new_title
+
+                logging.debug("found a new title : '%s' (#%s)", new_title, linenumber)
+
+        return location, current_title, stop
+                
 #///////////////////////////////////////////////////////////////////////////////
 def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitymode):
     """
@@ -546,9 +547,10 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
                         # before the doc title ?
                         if profile == "Python":
                             # todo : expliquer en quoi consiste le profile "Python"
-                            if SETTINGS["PROFILE_PYTHON_SPACENBR_FOR_A_TAB"]>0:
-                                _line = line.replace("\t",
-                                                     " "*SETTINGS["PROFILE_PYTHON_SPACENBR_FOR_A_TAB"])
+                            if SETTINGS["PROFILE_PYTHON_SPACENBR_FOR_A_TAB"] > 0:
+                                _line = \
+                                  line.replace("\t",
+                                               " "*SETTINGS["PROFILE_PYTHON_SPACENBR_FOR_A_TAB"])
                             startstring = _line[:_line.find(doc_title)]
                         else:
                             startstring = line[:line.find(doc_title)]

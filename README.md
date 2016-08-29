@@ -51,6 +51,8 @@ STARTSYMB_IN_DOC :| |
 PROFILE_PYTHON_SPACENBR_FOR_A_TAB : 4
 REMOVE_FINAL_SPACES_IN_NEW_DOCLINES : True
 
+Beware, the syntax "KEY = VALUE" is not supported.
+    
 #### REGEX_SOURCE_FILTER : .+py$
 Python regex describing which file in the source directory have to be read
 and -if required- modified.
@@ -61,6 +63,8 @@ REGEX_SOURCE_FILTER : .+py$
     
 REGEX_SOURCE_FILTER : .+cpp$|.+h$
 ... for C++ files
+
+Beware, the format string "*.py" is not supported.
 
 #### REGEX_FIND_DOCTITLE : ^\[(?P<doctitle>.+)\]$
 Python regex describing in the documentation source file the way the doctiles
@@ -107,9 +111,34 @@ PROFILE_PYTHON_SPACENBR_FOR_A_TAB : 0
 (no replacement)
     
 #### REMOVE_FINAL_SPACES_IN_NEW_DOCLINES : True
+If set to True, the leading spaces at the end of docline added by Pimydoc are
+removed.
     
-## how to add doctitles in the source directory
+Examples :
 
+REMOVE_FINAL_SPACES_IN_NEW_DOCLINES : True
+
+REMOVE_FINAL_SPACES_IN_NEW_DOCLINES : False
+        
+## how to add doctitles in the source directory
+todo
+
+## profiles
+According to the extension of the files read in the source directories, Pimydoc
+slightly changes the way it adds and updates the documentation. The known
+profiles are :
+
+### "Python"
+for files written in Python2 or Python3.
+
+• see PROFILE_PYTHON_SPACENBR_FOR_A_TAB .
+    
+### "CPP" (i.e. C++)
+nothing is changed compared to the default profile.
+
+### "default"
+default profile
+        
 #(3) installation and tests
 
     Don't forget : Pimydoc is Python3 project, not a Python2 project !
@@ -184,12 +213,15 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 	
 #(7) history / future versions
 
-- 0.1.7(beta) (2016_08_XX) : documentation/project in beta phase
+v 0.1.7(beta) (2016_08_29) : documentation/project in beta phase
     • improved the documentation
+
     • added tests/test8/ which should have been added in 0.1.6
     • improved error message in newline()
     • modified rewrite_new_targetfile() : if PROFILE_PYTHON_SPACENBR_FOR_A_TAB
       is set to 0, no tabulation is replaced.
+    • DocumentationSource.newline() is now a method (not a subfunction
+      of DocumentationSource.__init__() anymore)
     
     • unittests : 1 test (passed) 
     • raw Pylint invocation : 10.0/10.0 for all scripts.
