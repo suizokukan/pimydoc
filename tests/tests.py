@@ -41,7 +41,8 @@ def dirhash(path):
         dirhash()
         ________________________________________________________________________
 
-        Return the hash value of an directory tree.
+        Return the hash value of an directory tree. File whose name ends in
+        "~" are discarded.
         ________________________________________________________________________
 
         ARGUMENT : (str)path, the path of the directory tree.
@@ -73,17 +74,24 @@ def dirhash(path):
                     if not data:
                         break
                     sha.update(data)
+            #print("filehash()", filepath, sha.hexdigest())
             return True, sha.hexdigest()
         except FileNotFoundError:
             return False, None
 
     for root, _, files in os.walk(path):
         for fpath in [os.path.join(root, f) for f in files]:
-            is_ok, reshash = filehash(fpath)
-            if is_ok:
-                sha.update(reshash.encode())
+            if not fpath.endswith("~"):
+                is_ok, reshash = filehash(fpath)
+                if is_ok:
+                    sha.update(reshash.encode())
 
     return sha.hexdigest()
+
+#print(dirhash(os.path.join(".", "tests", "test0")))
+#print(dirhash(os.path.join(".", "tests", "current_test")))
+#import sys
+#sys.exit()
 
 # path to the temp directory where the files will be modified :
 PATH_TO_CURRENT_TEST = os.path.join(os.getcwd(), "tests", "current_test")
@@ -135,10 +143,11 @@ class Tests(unittest.TestCase):
                 ________________________________________________________________
         """
         # If you want to run only one test :
-        # for test_number in [8,]:
+        #for test_number in [0, 1]:
         for test_number in range(8+1):
 
             test_path = os.path.join(os.getcwd(), "tests", "test"+str(test_number))
+            print("Testing "+test_path)
             shutil.copytree(os.path.join(test_path), PATH_TO_CURRENT_TEST)
 
             pimydoc.pimydoc(args=ARGS,
@@ -153,13 +162,13 @@ class Tests(unittest.TestCase):
 
             shutil.rmtree(PATH_TO_CURRENT_TEST)
 
-            self.assertEqual(computed_hash, {0:"3e6ce8685299f20d79fcf12e50e34a33",
-                                             1:"8e3204c77be1637a326171f67307146e",
-                                             2:"6bfd068924de5a2c1dcfda3251392831",
-                                             3:"de2aab410c93d14460c9655114991657",
-                                             4:"9a71553228c3b8ca9c85e50ca766d37f",
-                                             5:"ca16119770f0309c09770233a47b78c1",
-                                             6:"e5d05f057e6b72e261c3a09bc2bd0317",
-                                             7:"e10aadbb96a51ea8be9f821000aa15c4",
-                                             8:"447a6203c5c4630b6fd96d7cff6260a6",
+            self.assertEqual(computed_hash, {0:"6569d0db5c329fcd59fd1b00fa9ac29b",
+                                             1:"79d6e8f0c8d066d2d799411dbed96e69",
+                                             2:"eb9ffc72c7ae93693ab366b702ed85cb",
+                                             3:"31d25cb498ea9bbac74cdc852d0ddf02",
+                                             4:"912f1b692ca56ca80cfdf830b2b46b3a",
+                                             5:"fee3837a00b1ac7f2def08d8a7db7792",
+                                             6:"9c7296e16a52ce170abe2dcdf3ce1ca7",
+                                             7:"cf7d921abeafe1a425eb96ca905e9e91",
+                                             8:"e1dfda50d4588168691b8600a61f8d4c",
                                             }[test_number])
