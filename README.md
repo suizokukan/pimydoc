@@ -216,7 +216,7 @@ default profile
 
     How to run the tests :
     
-    $ python -m unittest tests/tests.py
+    $ python3 -m unittest tests/tests.py
 
     or
     
