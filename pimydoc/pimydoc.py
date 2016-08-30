@@ -118,8 +118,8 @@ __licensepypi__ = 'License :: OSI Approved :: GNU General Public License v3 (GPL
 __version__ = PROJECT_VERSION
 __maintainer__ = "Xavier Faure (suizokukan)"
 __email__ = "suizokukan @T orange D@T fr"
-__status__ = "Alpha"
-__statuspypi__ = 'Development Status :: 3 - Alpha'
+__status__ = "Beta"
+__statuspypi__ = 'Development Status :: 4 - Beta'
 
 ################################################################################
 class Settings(dict):

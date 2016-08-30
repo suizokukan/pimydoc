@@ -29,5 +29,5 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 
 more
 ====
-see README.md file ("workflow" section)
+see README.md file (especially the "workflow" section)
 see https://github.com/suizokukan/pimydoc
