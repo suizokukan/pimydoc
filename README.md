@@ -309,6 +309,8 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 
     • improved the documentation
 
+    • fixed a bug in the tests : the filenames have to be sorted in order to
+      hash a directory exactly the same way on different computers.
     • added tests/test8/ which should have been added in 0.1.6
     • improved error message in newline()
     • modified rewrite_new_targetfile() : if PROFILE_PYTHON_SPACENBR_FOR_A_TAB

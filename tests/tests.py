@@ -50,7 +50,7 @@ def dirhash(path):
         RETURNED VALUE : the expected string.
     """
     sha = hashlib.md5()
-
+ 
     def filehash(filepath):
         """
             filehash()
@@ -74,13 +74,12 @@ def dirhash(path):
                     if not data:
                         break
                     sha.update(data)
-            #print("filehash()", filepath, sha.hexdigest())
             return True, sha.hexdigest()
         except FileNotFoundError:
             return False, None
 
     for root, _, files in os.walk(path):
-        for fpath in [os.path.join(root, f) for f in files]:
+        for fpath in [os.path.join(root, f) for f in sorted(files)]:
             if not fpath.endswith("~"):
                 is_ok, reshash = filehash(fpath)
                 if is_ok:
@@ -88,7 +87,7 @@ def dirhash(path):
 
     return sha.hexdigest()
 
-#print(dirhash(os.path.join(".", "tests", "test0")))
+#print("??", dirhash(os.path.join(".", "tests", "test0")))
 #print(dirhash(os.path.join(".", "tests", "current_test")))
 #import sys
 #sys.exit()
@@ -162,13 +161,13 @@ class Tests(unittest.TestCase):
 
             shutil.rmtree(PATH_TO_CURRENT_TEST)
 
-            self.assertEqual(computed_hash, {0:"6569d0db5c329fcd59fd1b00fa9ac29b",
-                                             1:"79d6e8f0c8d066d2d799411dbed96e69",
-                                             2:"eb9ffc72c7ae93693ab366b702ed85cb",
-                                             3:"31d25cb498ea9bbac74cdc852d0ddf02",
-                                             4:"912f1b692ca56ca80cfdf830b2b46b3a",
-                                             5:"fee3837a00b1ac7f2def08d8a7db7792",
-                                             6:"9c7296e16a52ce170abe2dcdf3ce1ca7",
-                                             7:"cf7d921abeafe1a425eb96ca905e9e91",
-                                             8:"e1dfda50d4588168691b8600a61f8d4c",
+            self.assertEqual(computed_hash, {0:"cb94b5865f7a48cf9c934e9afa9a55f1",
+                                             1:"3d35e1af0b0350cf53645e3169149353",
+                                             2:"43cf3a1be20e5e3ba08a205c4ec0a76f",
+                                             3:"b16ac38da7d743c1e6b2b3036ea181cc",
+                                             4:"963e6a780f4508875a5ae963a5949302",
+                                             5:"98f263aefccfd01b08bce7cc4d623ea4",
+                                             6:"d72da8d969b03abd18c192e1a7ae3466",
+                                             7:"2ef2d151196e1cead4c584002ce59cdf",
+                                             8:"fb80d1ded9adc9a5b7d31f33ae0259d3",
                                             }[test_number])
