@@ -174,8 +174,6 @@ class Settings(dict):
         class methods :
             • __init__(self)
             • init_from_line(self, line)
-
-        todo : documenter le jeu des re.escape()
     """
 
     #///////////////////////////////////////////////////////////////////////////
@@ -575,13 +573,10 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
                                 new_docline, new_doclinefeed = \
                                     remove_and_return_linefeed(new_docline)
                                 if new_doclinefeed == "":
-                                    # todo : expliquer que si une docline ne se termine pas par un
-                                    # linefeed
-                                    # (=parce que cette docline apparaît comme la dernière ligne du
-                                    # fichier
-                                    #   documentation source file, alors on est quand même obligé
-                                    # de considérer
-                                    #  que la docline forme une ligne (=texte + linefeed)
+                                    # a special case : if a docline stored in the documentation
+                                    # source file doesn't end with a linefeed character(s)
+                                    # (e.g. since this line is the last of the file),
+                                    # we have to add a linefeed at the end of the line :
                                     new_doclinefeed = "\n"
                                 new_docline = new_docline.rstrip()
                                 new_docline += new_doclinefeed
@@ -660,8 +655,9 @@ def pimydoc(args, docsrc):
         ____________________________________________________________________
 
         ARGUMENTS :
-        • args                      : (argparse.Namespace)
-        • docsrc                    : todo
+        • args                      : (argparse.Namespace) args from the
+                                      commande line.
+        • docsrc                    : (DocumentationSource object) doc content
 
         no RETURNED VALUE
     """
