@@ -197,11 +197,11 @@ class Settings(dict):
         # see how self can be initialized from a file.
         self["REGEX_SOURCE_FILTER"] = ""
         self["REGEX_FIND_DOCTITLE"] = "^\\[(?P<name>.+)\\]$"
-        self["STARTSYMB_IN_DOC"] = "| |" + " " # a fancy way to write STARTSYMB_IN_DOC but it
-                                               # avoids, if Pimydoc is applied to this file,
-                                               # to remove this line since this line contains
-                                               # the STARTSYMB_IN_DOC symbols defined in the
-                                               # documentation source file.
+        self["STARTSYMB_IN_DOC"] = "| " + "|" + " " # a fancy way to write STARTSYMB_IN_DOC but it
+                                                    # avoids, if Pimydoc is applied to this file,
+                                                    # to remove this line since this line contains
+                                                    # the STARTSYMB_IN_DOC symbols defined in the
+                                                    # documentation source file.
         self["STARTSYMB_IN_DOC__ESCAPE"] = re.escape(self["STARTSYMB_IN_DOC"])
         self["PROFILE_PYTHON_SPACENBR_FOR_A_TAB"] = 4
         self["REMOVE_FINAL_SPACES_IN_NEW_DOCLINES"] = "True"
@@ -550,7 +550,8 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
             for linenumber, line in enumerate(targetcontent):
 
                 # let's add a "normal" line, i.e. everything but a Pimydoc-docline.
-                if SETTINGS["STARTSYMB_IN_DOC"] not in line:
+                if SETTINGS["STARTSYMB_IN_DOC"] not in line and \
+                   SETTINGS["STARTSYMB_IN_DOC"].rstrip() not in line:
                     newtargetfile.write(line)
                 else:
                     logging.debug("Line removed from '%s' : '%s'", targetfile_name, line.strip())
@@ -591,6 +592,7 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
                                     new_doclinefeed = "\n"
                                 new_docline = new_docline.rstrip()
                                 new_docline += new_doclinefeed
+                            logging.debug("+ (%s characters) '%s'", len(new_docline), new_docline.replace(" ", "_"))
                             newtargetfile.write(new_docline)
 
     # ----------------------------
@@ -671,7 +673,6 @@ def pimydoc(args, just_remove_pimydoc_lines, docsrc):
 
         no RETURNED VALUE
     """
-    print("!!!", type(args))
     number_of_files = 0
     number_of_discarded_files = 0
 

@@ -141,8 +141,8 @@ class Tests(unittest.TestCase):
                 tests/test#n directory.
                 ________________________________________________________________
         """
-        # If you want to run only one test :
-        #for test_number in [0, 1]:
+        # If you want to choose the test to be runed:
+        #for test_number in [8,]:
         for test_number in range(8+1):
 
             test_path = os.path.join(os.getcwd(), "tests", "test"+str(test_number))
@@ -165,8 +165,8 @@ class Tests(unittest.TestCase):
                                              1:"3d35e1af0b0350cf53645e3169149353",
                                              2:"43cf3a1be20e5e3ba08a205c4ec0a76f",
                                              3:"b16ac38da7d743c1e6b2b3036ea181cc",
-                                             4:"963e6a780f4508875a5ae963a5949302",
-                                             5:"98f263aefccfd01b08bce7cc4d623ea4",
+                                             4:"5e2726dd3d036e09a25553826f06b1d3",
+                                             5:"0babc63109c2c7fcf833429782a7e093",
                                              6:"d72da8d969b03abd18c192e1a7ae3466",
                                              7:"2ef2d151196e1cead4c584002ce59cdf",
                                              8:"fb80d1ded9adc9a5b7d31f33ae0259d3",
