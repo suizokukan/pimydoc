@@ -167,12 +167,6 @@ class Settings(dict):
         | | ____| |
         | | ...car le dernier espace a été supprimé grâce à REMOVE_FINAL_SPACES_IN_NEW_DOCLINES .
         | |
-        | |
-        | |
-        | |
-        | |
-        | |
-        | |
         ________________________________________________________________________
 
         class attributes : -
@@ -558,6 +552,8 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
                 # let's add a "normal" line, i.e. everything but a Pimydoc-docline.
                 if SETTINGS["STARTSYMB_IN_DOC"] not in line:
                     newtargetfile.write(line)
+                else:
+                    logging.debug("Line removed from '%s' : '%s'", targetfile_name, line.strip())
 
                 if linenumber in lines_with_trigger:
                     # let's add the expected documentation :
