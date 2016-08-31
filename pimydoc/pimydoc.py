@@ -211,7 +211,7 @@ class Settings(dict):
             ____________________________________________________________________
 
             ARGUMENT : (str)line, the line to be analysed
-        
+
             RETURNED VALUE : 0 if success, -1 if an important problem occured
         """
         returned_value = 0
@@ -392,7 +392,7 @@ class DocumentationSource(dict):
             ____________________________________________________________________
 
             ARGUMENT : (str)filename, the name of the file to be read.
-        
+
             no RETURNED VALUE
         """
         # ---------------------------------------------
@@ -436,7 +436,7 @@ class DocumentationSource(dict):
     #///////////////////////////////////////////////////////////////////////////
     def newline(self, line, linenumber, location, current_title):
         """
-            DocumentationSource.newline() :  somehow a subfunction of 
+            DocumentationSource.newline() :  somehow a subfunction of
                                              DocumentationSource.__init__()
             ________________________________________________________________
 
@@ -503,7 +503,7 @@ class DocumentationSource(dict):
                 logging.debug("found a new title : '%s' (#%s)", new_title, linenumber)
 
         return location, current_title, stop
-                
+
 #///////////////////////////////////////////////////////////////////////////////
 def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitymode):
     """
@@ -519,7 +519,7 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
         ARGUMENTS :
         • targetfile_name           : (str) name of the file to be modified
         • docsrc                    : (DocumentationSource) doc content
-        • just_remove_pimydoc_lines : (bool) if True, nothing is added but the 
+        • just_remove_pimydoc_lines : (bool) if True, nothing is added but the
                                       pimydoc lines of documentation are removed.
         • securitymode              : (bool) True if the backup files created
                                       by this function have to be kept.
@@ -539,7 +539,7 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
 
             ARGUMENTS :
             • targetfile_name           : (str) name of the file to be modified
-            • just_remove_pimydoc_lines : (bool) if True, nothing is added but the 
+            • just_remove_pimydoc_lines : (bool) if True, nothing is added but the
                                           pimydoc lines of documentation are removed.
 
             no RETURNED VALUE
@@ -587,7 +587,8 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
                                     new_doclinefeed = "\n"
                                 new_docline = new_docline.rstrip()
                                 new_docline += new_doclinefeed
-                            logging.debug("+ (%s characters) '%s'", len(new_docline), new_docline.replace(" ", "_"))
+                            logging.debug("+ (%s characters) '%s'",
+                                          len(new_docline), new_docline.replace(" ", "_"))
                             newtargetfile.write(new_docline)
 
     # ----------------------------
@@ -657,7 +658,7 @@ def pimydoc(args, docsrc):
         Main function of the program : insert and add the documentation
         stored in <docsrc> in the files given by <args>.
 
-        To be called from another script after args  has been filled. 
+        To be called from another script after args  has been filled.
         This function doesn't read the arguments on the command line.
         ____________________________________________________________________
 

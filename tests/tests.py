@@ -50,7 +50,7 @@ def dirhash(path):
         RETURNED VALUE : the expected string.
     """
     sha = hashlib.md5()
- 
+
     def filehash(filepath):
         """
             filehash()
@@ -192,7 +192,7 @@ class Tests(unittest.TestCase):
         test_path = os.path.join(os.getcwd(), "tests", "test5")
         print("Testing "+test_path)
         shutil.copytree(os.path.join(test_path), PATH_TO_CURRENT_TEST)
-        
+
         pimydoc.pimydoc(args=ARGS_R,
                         docsrc=pimydoc.DocumentationSource(ARGS.docsrcfile))
 
