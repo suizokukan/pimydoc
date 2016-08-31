@@ -146,25 +146,8 @@ class Settings(dict):
                                               spaces replacing a tab character.
 
         • REMOVE_FINAL_SPACES_IN_NEW_DOCLINES : (str) "True" or "False"
-        ________________________________________________________________________
-        about the docsrc format :
-        | | This text has been automatically added by Pimydoc.
-        | | expliquer que on peut laisser un espace après STARTSYMB_IN_DOC
-        | |
-        | | Le fichier pimydoc est précis :
-        | | 	STARTSYMB_IN_DOC :|_|_
-        | | ne donnera pas le même résultat que :
-        | | 	STARTSYMB_IN_DOC :|_|
-        | |
-        | | La raison d'être de "REGEX_FIND_PIMYDOCLINE_IN_CODE2" est qu'avec
-        | | REGEX_FIND_PIMYDOCLINE_IN_CODE on attrape des lignes telles que :
-        | | ____| |_doc
-        | | ____| |_doc_
-        | | ____| |_doc
-        | | mais pas de lignes comme :
-        | | ____| |
-        | | ...car le dernier espace a été supprimé grâce à REMOVE_FINAL_SPACES_IN_NEW_DOCLINES .
-        | |
+
+        about the docsrc (documentation source file) format : see README.md
         ________________________________________________________________________
 
         class attributes : -
@@ -580,10 +563,7 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
                                 new_docline, new_doclinefeed = \
                                     remove_and_return_linefeed(new_docline)
                                 if new_doclinefeed == "":
-                                    # a special case : if a docline stored in the documentation
-                                    # source file doesn't end with a linefeed character(s)
-                                    # (e.g. since this line is the last of the file),
-                                    # we have to add a linefeed at the end of the line :
+                                    # a special case : see README.md, "(2.1.1) a special case"
                                     new_doclinefeed = "\n"
                                 new_docline = new_docline.rstrip()
                                 new_docline += new_doclinefeed

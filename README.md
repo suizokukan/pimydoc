@@ -37,18 +37,19 @@ The source file becomes :
         print("...")
 
     
-#(2) purpose
+#(2) purpose and file format
 
 Pimydoc inserts in source files the text paragraphs stored in "pimydoc", the
 documentation source file. Moreover, the script updates the text paragraphs
 already present in the source files if the documentation source file has
 changed.
 
-## documentation source file format
+## (2.1) documentation source file (docsrc) format
 The file "pimydoc" is mandatory : it contains the documentation to be inserted
 in the source directory. After an optional header beginning with the string
 "[pimydoc]", the documentation itself is divided along doctitles written
-in brackets, like "[doctitle1]".
+in brackets, like "[doctitle1]", followed by **docline**, a line followed
+by linefeed character(s).
 
     ### a simple example of a "documentation source file" :
     [pimydoc]
@@ -65,11 +66,16 @@ This example will find all Python files (see REGEX_SOURCE_FILTER) and add after
 each "doctitle1" mention the two lines given, and add after each "doctitle2"
 the line given.
 
-### comments
+###(2.1.1) a special case
+
+If a docline is not followed by some linefeed character(s) (e.g. if this line
+is the last of the file), the script will automatically add a linefeed.
+
+###(2.1.2) comments
 Comments are lines beginning with the "###" string. Comments added at the end of
 a line like "some stuff ### mycomment" are not allowed.
 
-### header
+###(2.1.3) header
 
 The header is optional and always begin with the "[pimydoc]" string.
 The header's content is made of single lines following the "KEY:VALUE"
@@ -157,7 +163,7 @@ REMOVE_FINAL_SPACES_IN_NEW_DOCLINES : True
 
 REMOVE_FINAL_SPACES_IN_NEW_DOCLINES : False
         
-## how to add doctitles in the source directory
+##(2.2) how to add doctitles in the files stored in the source directory
 You juste have to add on a line the name of a doctitle (do **not follow the
 format described in REGEX_FIND_DOCTITLE, e.g. "[ressource::001]"**, this
 regex being used only in the documentation source file).
@@ -187,7 +193,7 @@ The source file becomes :
         """
         print("...")
     
-## profiles
+##(2.3) profiles
 According to the extension of the files read in the source directories, Pimydoc
 slightly changes the way it adds and updates the documentation. The known
 profiles are :
@@ -305,7 +311,7 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 	
 #(7) history / future versions
 
-##v 0.1.7(beta) (2016_08_29) : documentation/project in beta stage.
+##v 0.1.7(beta) (2016_08_29) : documentation improved/project in beta stage.
 
     • improved the documentation
 
