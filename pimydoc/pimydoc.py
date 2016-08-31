@@ -167,6 +167,12 @@ class Settings(dict):
         | | ____| |
         | | ...car le dernier espace a été supprimé grâce à REMOVE_FINAL_SPACES_IN_NEW_DOCLINES .
         | |
+        | |
+        | |
+        | |
+        | |
+        | |
+        | |
         ________________________________________________________________________
 
         class attributes : -
@@ -197,7 +203,11 @@ class Settings(dict):
         # see how self can be initialized from a file.
         self["REGEX_SOURCE_FILTER"] = ""
         self["REGEX_FIND_DOCTITLE"] = "^\\[(?P<name>.+)\\]$"
-        self["STARTSYMB_IN_DOC"] = "| | "
+        self["STARTSYMB_IN_DOC"] = "| |" + " " # a fancy way to write STARTSYMB_IN_DOC but it
+                                               # avoids, if Pimydoc is applied to this file,
+                                               # to remove this line since this line contains
+                                               # the STARTSYMB_IN_DOC symbols defined in the
+                                               # documentation source file.
         self["STARTSYMB_IN_DOC__ESCAPE"] = re.escape(self["STARTSYMB_IN_DOC"])
         self["PROFILE_PYTHON_SPACENBR_FOR_A_TAB"] = 4
         self["REMOVE_FINAL_SPACES_IN_NEW_DOCLINES"] = "True"
@@ -659,12 +669,13 @@ def pimydoc(args, just_remove_pimydoc_lines, docsrc):
         ____________________________________________________________________
 
         ARGUMENTS :
-        • args                      : todo
+        • args                      : (argparse.Namespace)
         • just_remove_pimydoc_lines : (bool) todo
         • docsrc                    : todo
 
         no RETURNED VALUE
     """
+    print("!!!", type(args))
     number_of_files = 0
     number_of_discarded_files = 0
 
