@@ -311,6 +311,10 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 	
 #(7) history / future versions
 
+##v 0.1.8(beta) (2016_09_XX) : 
+
+    • improved the documentation
+        
 ##v 0.1.7(beta) (2016_08_29) : documentation improved/project in beta stage.
 
     • improved the documentation
