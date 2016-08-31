@@ -299,9 +299,7 @@ class CommandLineParser(argparse.ArgumentParser):
                 Initialize the object by adding all the arguments.
                 ________________________________________________________________
 
-                no PARAMETER
-
-                RETURNED VALUE    : no RETURNED VALUE
+                no PARAMETER, no RETURNED VALUE
         """
         argparse.ArgumentParser.__init__(self,
                                          description=CommandLineParser.description,
@@ -373,6 +371,15 @@ class DocumentationSource(dict):
 
         self.errors = [] a list of str
         ________________________________________________________________________
+
+        class attributes : -
+
+        instance attribute(s) : -
+            • self.errors : a list of strings, filled by the newline() method.
+
+        class methods :
+            • __init__(self, filename)
+            • newline(self, line, linenumber, location, current_title)
     """
 
     #///////////////////////////////////////////////////////////////////////////
@@ -429,7 +436,7 @@ class DocumentationSource(dict):
     #///////////////////////////////////////////////////////////////////////////
     def newline(self, line, linenumber, location, current_title):
         """
-            DocumentationSource.newline() :  a subfunction of 
+            DocumentationSource.newline() :  somehow a subfunction of 
                                              DocumentationSource.__init__()
             ________________________________________________________________
 
@@ -524,7 +531,7 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
         """
             rewrite_new_targetfile()
 
-            this function is a part of the pimydoc_a_file() function.
+            this function is a subfunction of the pimydoc_a_file() function.
             ________________________________________________________________________
 
             Rewrite the target file with the documentation to be added.
