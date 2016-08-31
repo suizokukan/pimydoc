@@ -131,23 +131,23 @@ class Settings(dict):
         function.
         The settings are stored as in a dictionary : (str)key->(str)value
 
-        REGEX_SOURCE_FILTER : regex describing the name of the files to be
-                              modified.
+        • REGEX_SOURCE_FILTER : regex describing the name of the files to be
+                                modified.
 
-        REGEX_FIND_DOCTITLE : regex describing the name (in the documentation
-                              source file) of the titles.
-                              See below for more details (docsrc format)
+        • REGEX_FIND_DOCTITLE : regex describing the name (in the documentation
+                                source file) of the titles.
+                                See below for more details (docsrc format)
 
-        STARTSYMB_IN_DOC    : string at the beginning of each line of
-                              documentation added in the source files.
-                              See below for more details (docsrc format)
+        • STARTSYMB_IN_DOC    : string at the beginning of each line of
+                                documentation added in the source files.
+                                See below for more details (docsrc format)
 
-        STARTSYMB_IN_DOC__ESCAPE : re.escape(STARTSYMB_IN_DOC)
+        • STARTSYMB_IN_DOC__ESCAPE : re.escape(STARTSYMB_IN_DOC)
 
-        PROFILE_PYTHON_SPACENBR_FOR_A_TAB : (int) for Python files, number of
-                                            spaces replacing a tab character.
+        • PROFILE_PYTHON_SPACENBR_FOR_A_TAB : (int) for Python files, number of
+                                              spaces replacing a tab character.
 
-        REMOVE_FINAL_SPACES_IN_NEW_DOCLINES : (str) "True" or "False"
+        • REMOVE_FINAL_SPACES_IN_NEW_DOCLINES : (str) "True" or "False"
         ________________________________________________________________________
         about the docsrc format :
         | | This text has been automatically added by Pimydoc.
@@ -206,8 +206,14 @@ class Settings(dict):
     def init_from_line(self, line):
         """
             Settings.init_from_line()
+            ____________________________________________________________________
 
-            returned value : 0 if success, -1 if an important problem occured
+            Analyse the (str)<line> and set a pair (key, value) in self.
+            ____________________________________________________________________
+
+            ARGUMENT : (str)line, the line to be analysed
+        
+            RETURNED VALUE : 0 if success, -1 if an important problem occured
         """
         returned_value = 0
 
@@ -298,7 +304,7 @@ class CommandLineParser(argparse.ArgumentParser):
                 Initialize the object by adding all the arguments.
                 ________________________________________________________________
 
-                PARAMETERS      : no parameter
+                no PARAMETER
 
                 RETURNED VALUE    : no RETURNED VALUE
         """
@@ -358,7 +364,7 @@ class CommandLineParser(argparse.ArgumentParser):
                 object.
                 ________________________________________________________________
 
-                PARAMETER(S)    : no parameter
+                no PARAMETER
 
                 RETURNED VALUE    : the argparse.Namespace object
         """
@@ -378,8 +384,14 @@ class DocumentationSource(dict):
     def __init__(self, filename):
         """
             DocumentationSource.__init__()
+            ____________________________________________________________________
 
             Initialize self and SETTINGS from the content of filename.
+            ____________________________________________________________________
+
+            ARGUMENT : (str)filename, the name of the file to be read.
+        
+            no RETURNED VALUE
         """
         # ---------------------------------------------
         # entry point of DocumentationSource.__init__()
@@ -493,18 +505,20 @@ class DocumentationSource(dict):
 #///////////////////////////////////////////////////////////////////////////////
 def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitymode):
     """
-        Update the documentation in a file.
+        pimydoc_a_file()
         ________________________________________________________________________
+
+        Update the documentation in a file.
 
         Read a target file, removed the old documentation and replace it by the
         new one described in <docsrc>.
         ________________________________________________________________________
 
         ARGUMENTS :
-        • targetfile_name           : name of the file to be modified
-        • docsrc                    : a DocumentationSource object
-        • just_remove_pimydoc_lines : if True, nothing is added but the pimydoc
-                                      lines of documentation are removed.
+        • targetfile_name           : (str) name of the file to be modified
+        • docsrc                    : (DocumentationSource) doc content
+        • just_remove_pimydoc_lines : (bool) if True, nothing is added but the 
+                                      pimydoc lines of documentation are removed.
         • securitymode              : (bool) True if the backup files created
                                       by this function have to be kept.
 
@@ -513,17 +527,18 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
 
     def rewrite_new_targetfile(targetfile_name, just_remove_pimydoc_lines):
         """
-            rewrite_new_targetfile() : this function is a part of the pimydoc_a_file()
-            function.
+            rewrite_new_targetfile()
+
+            this function is a part of the pimydoc_a_file() function.
             ________________________________________________________________________
 
             Rewrite the target file with the documentation to be added.
             ________________________________________________________________________
 
             ARGUMENTS :
-            • targetfile_name           : name of the file to be modified
-            • just_remove_pimydoc_lines : if True, nothing is added but the pimydoc
-                                          lines of documentation are removed.
+            • targetfile_name           : (str) name of the file to be modified
+            • just_remove_pimydoc_lines : (bool) if True, nothing is added but the 
+                                          pimydoc lines of documentation are removed.
 
             no RETURNED VALUE
         """
@@ -636,12 +651,19 @@ def pimydoc(args, just_remove_pimydoc_lines, docsrc):
         pimydoc() function
         ____________________________________________________________________
 
-        to be called from another script after args  has been filled : this
-        function doesn't read the arguments on the command line.
+        Main function of the program : insert and add the documentation
+        stored in <docsrc> in the files given by <args>.
+
+        To be called from another script after args  has been filled. 
+        This function doesn't read the arguments on the command line.
         ____________________________________________________________________
 
-        no ARGUMENT, no RETURNED VALUE
-        todo
+        ARGUMENTS :
+        • args                      : todo
+        • just_remove_pimydoc_lines : (bool) todo
+        • docsrc                    : todo
+
+        no RETURNED VALUE
     """
     number_of_files = 0
     number_of_discarded_files = 0
@@ -676,16 +698,16 @@ def main():
 
         Main entry point. Fill the args variable. Launch the pimydoc()
         function.
-
-        exit codes
-        | |  0 if success
-        | | -1 if the documentation source file doesn't exist
-        | | -2 if the documentation source file is ill-formed
         ________________________________________________________________________
 
         no PARAMETER
 
         no RETURNED VALUE
+
+        exit codes
+        | |  0 if success
+        | | -1 if the documentation source file doesn't exist
+        | | -2 if the documentation source file is ill-formed
     """
     args = CommandLineParser().get_args()
 
@@ -734,8 +756,6 @@ def main():
 
     sys.exit(0)
 
-#///////////////////////////////////////////////////////////////////////////////
-#/////////////////////////////// STARTING POINT ////////////////////////////////
 #///////////////////////////////////////////////////////////////////////////////
 if __name__ == '__main__':
     main()
