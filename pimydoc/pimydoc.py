@@ -107,7 +107,7 @@ PROJECT_NAME = "Pimydoc"
 
 # see https://www.python.org/dev/peps/pep-0440/
 # e.g. 0.1.2.dev1, 0.0.6a0
-PROJECT_VERSION = "0.1.6"
+PROJECT_VERSION = "0.1.7"
 
 # constants required by Pypi.
 __projectname__ = PROJECT_NAME
@@ -118,8 +118,8 @@ __licensepypi__ = 'License :: OSI Approved :: GNU General Public License v3 (GPL
 __version__ = PROJECT_VERSION
 __maintainer__ = "Xavier Faure (suizokukan)"
 __email__ = "suizokukan @T orange D@T fr"
-__status__ = "Alpha"
-__statuspypi__ = 'Development Status :: 3 - Alpha'
+__status__ = "Beta"
+__statuspypi__ = 'Development Status :: 4 - Beta'
 
 ################################################################################
 class Settings(dict):
@@ -131,42 +131,23 @@ class Settings(dict):
         function.
         The settings are stored as in a dictionary : (str)key->(str)value
 
-        REGEX_SOURCE_FILTER : regex describing the name of the files to be
-                              modified.
+        • REGEX_SOURCE_FILTER : regex describing the name of the files to be
+                                modified.
 
-        REGEX_FIND_DOCTITLE : regex describing the name (in the documentation
-                              source file) of the titles.
-                              See below for more details (docsrc format)
+        • REGEX_FIND_DOCTITLE : regex describing the name (in the documentation
+                                source file) of the titles.
+                                See below for more details (docsrc format)
 
-        STARTSYMB_IN_DOC    : string at the beginning of each line of
-                              documentation added in the source files.
-                              See below for more details (docsrc format)
+        • STARTSYMB_IN_DOC    : string at the beginning of each line of
+                                documentation added in the source files.
+                                See below for more details (docsrc format)
 
-        STARTSYMB_IN_DOC__ESCAPE : re.escape(STARTSYMB_IN_DOC)
+        • PROFILE_PYTHON_SPACENBR_FOR_A_TAB : (int) for Python files, number of
+                                              spaces replacing a tab character.
 
-        PROFILE_PYTHON_SPACENBR_FOR_A_TAB : (int) for Python files, number of
-                                            spaces replacing a tab character.
+        • REMOVE_FINAL_SPACES_IN_NEW_DOCLINES : (str) "True" or "False"
 
-        REMOVE_FINAL_SPACES_IN_NEW_DOCLINES : (str) "True" or "False"
-        ________________________________________________________________________
-        about the docsrc format :
-        | | This text has been automatically added by Pimydoc.
-        | | expliquer que on peut laisser un espace après STARTSYMB_IN_DOC
-        | |
-        | | Le fichier pimydoc est précis :
-        | | 	STARTSYMB_IN_DOC :|_|_
-        | | ne donnera pas le même résultat que :
-        | | 	STARTSYMB_IN_DOC :|_|
-        | |
-        | | La raison d'être de "REGEX_FIND_PIMYDOCLINE_IN_CODE2" est qu'avec
-        | | REGEX_FIND_PIMYDOCLINE_IN_CODE on attrape des lignes telles que :
-        | | ____| |_doc
-        | | ____| |_doc_
-        | | ____| |_doc
-        | | mais pas de lignes comme :
-        | | ____| |
-        | | ...car le dernier espace a été supprimé grâce à REMOVE_FINAL_SPACES_IN_NEW_DOCLINES .
-        | |
+        about the docsrc (documentation source file) format : see README.md
         ________________________________________________________________________
 
         class attributes : -
@@ -176,8 +157,6 @@ class Settings(dict):
         class methods :
             • __init__(self)
             • init_from_line(self, line)
-
-        todo : documenter le jeu des re.escape()
     """
 
     #///////////////////////////////////////////////////////////////////////////
@@ -197,8 +176,11 @@ class Settings(dict):
         # see how self can be initialized from a file.
         self["REGEX_SOURCE_FILTER"] = ""
         self["REGEX_FIND_DOCTITLE"] = "^\\[(?P<name>.+)\\]$"
-        self["STARTSYMB_IN_DOC"] = "| | "
-        self["STARTSYMB_IN_DOC__ESCAPE"] = re.escape(self["STARTSYMB_IN_DOC"])
+        self["STARTSYMB_IN_DOC"] = "| " + "|" + " " # a fancy way to write STARTSYMB_IN_DOC but it
+                                                    # avoids, if Pimydoc is applied to this file,
+                                                    # to remove this line since this line contains
+                                                    # the STARTSYMB_IN_DOC symbols defined in the
+                                                    # documentation source file.
         self["PROFILE_PYTHON_SPACENBR_FOR_A_TAB"] = 4
         self["REMOVE_FINAL_SPACES_IN_NEW_DOCLINES"] = "True"
 
@@ -206,8 +188,14 @@ class Settings(dict):
     def init_from_line(self, line):
         """
             Settings.init_from_line()
+            ____________________________________________________________________
 
-            returned value : 0 if success, -1 if an important problem occured
+            Analyse the (str)<line> and set a pair (key, value) in self.
+            ____________________________________________________________________
+
+            ARGUMENT : (str)line, the line to be analysed
+
+            RETURNED VALUE : 0 if success, -1 if an important problem occured
         """
         returned_value = 0
 
@@ -233,10 +221,6 @@ class Settings(dict):
                 elif key == "STARTSYMB_IN_DOC":
                     self[key] = value
                     logging.debug("key '%s' set to '%s' (%s).", key, self[key], type(self[key]))
-
-                    self["STARTSYMB_IN_DOC__ESCAPE"] = re.escape(self["STARTSYMB_IN_DOC"])
-                    logging.debug("key 'STARTSYMB_IN_DOC__ESCAPE' set to '%s' (%s).",
-                                  self["STARTSYMB_IN_DOC__ESCAPE"], type(self[key]))
 
                 elif key == "PROFILE_PYTHON_SPACENBR_FOR_A_TAB":
                     self[key] = int(value)
@@ -298,9 +282,7 @@ class CommandLineParser(argparse.ArgumentParser):
                 Initialize the object by adding all the arguments.
                 ________________________________________________________________
 
-                PARAMETERS      : no parameter
-
-                RETURNED VALUE    : no RETURNED VALUE
+                no PARAMETER, no RETURNED VALUE
         """
         argparse.ArgumentParser.__init__(self,
                                          description=CommandLineParser.description,
@@ -358,7 +340,7 @@ class CommandLineParser(argparse.ArgumentParser):
                 object.
                 ________________________________________________________________
 
-                PARAMETER(S)    : no parameter
+                no PARAMETER
 
                 RETURNED VALUE    : the argparse.Namespace object
         """
@@ -372,80 +354,30 @@ class DocumentationSource(dict):
 
         self.errors = [] a list of str
         ________________________________________________________________________
+
+        class attributes : -
+
+        instance attribute(s) : -
+            • self.errors : a list of strings, filled by the newline() method.
+
+        class methods :
+            • __init__(self, filename)
+            • newline(self, line, linenumber, location, current_title)
     """
 
     #///////////////////////////////////////////////////////////////////////////
     def __init__(self, filename):
         """
             DocumentationSource.__init__()
+            ____________________________________________________________________
 
             Initialize self and SETTINGS from the content of filename.
+            ____________________________________________________________________
+
+            ARGUMENT : (str)filename, the name of the file to be read.
+
+            no RETURNED VALUE
         """
-
-        def newline(line, linenumber, location, current_title):
-            """
-                newline() :  a subfunction of DocumentationSource.__init__()
-                ________________________________________________________________
-
-                Add the line to the settings or the current doc title.
-                ________________________________________________________________
-
-                ARGUMENTS :
-                • line          : (str) line to be added
-                • linenumber    : (int) line number in the source file
-                • location      : (str) see __init__() : None, "doc", ...
-                • current_title : (str) the current doc title.
-
-                RETURNED VALUE : ((str)location, (str)current_title, (bool)stop)
-            """
-            stop = False
-
-            find_title = re.search(SETTINGS["REGEX_FIND_DOCTITLE"], line)
-
-            if find_title is not None:
-                location = "doc"
-                logging.debug("beginning of the doc at line '%s' (#%s)",
-                              line.strip(), linenumber)
-
-            if location == "settings":
-                separator = line.find(":")
-
-                if separator >= 0:
-                    if SETTINGS.init_from_line(line) != 0:
-                        logging.error("! An error occured : " \
-                                      "stop reading the documentation source file.")
-                        self.errors.append("Can't read the " \
-                                           "line '{0}' (#{1})".format(line, linenumber))
-                        stop = True
-                elif len(line.strip()) > 0:
-                    logging.error("! (reading the documentation source file) " \
-                                  " Can't read the following line : '%s' (#%s)",
-                                  line, linenumber)
-
-            elif location == "doc":
-
-                if find_title is None:
-                    self[current_title].append(line)
-                else:
-                    try:
-                        new_title = find_title.group("doctitle")
-                    except IndexError as error:
-                        logging.error("! An error occured : " \
-                                      "stop reading the documentation source file.")
-                        self.errors.append("Can't read the line '{0}' (#{1}) : " \
-                                           "ill-formed doctitle".format(line, linenumber))
-                        self.errors.append("Error returned by Python :"+str(error))
-                        stop = True
-
-                    if new_title in self:
-                        logging.error("! title '%s' already defined !", new_title)
-                    self[new_title] = []
-                    current_title = new_title
-
-                    logging.debug("found a new title : '%s' (#%s)", new_title, linenumber)
-
-            return location, current_title, stop
-
         # ---------------------------------------------
         # entry point of DocumentationSource.__init__()
         logging.debug("DocumentationSource.__init__() : %s", filename)
@@ -478,27 +410,100 @@ class DocumentationSource(dict):
                     logging.debug("settings detected by reading the '%s' line (#%s).",
                                   line.strip(), linenumber)
                 else:
-                    location, current_title, stop = newline(line, linenumber,
-                                                            location, current_title)
+                    location, current_title, stop = self.newline(line, linenumber,
+                                                                 location, current_title)
 
                 if stop:
                     break
 
+    #///////////////////////////////////////////////////////////////////////////
+    def newline(self, line, linenumber, location, current_title):
+        """
+            DocumentationSource.newline() :  somehow a subfunction of
+                                             DocumentationSource.__init__()
+            ________________________________________________________________
+
+            Add the line to the settings or the current doc title.
+            ________________________________________________________________
+
+            ARGUMENTS :
+            • line          : (str) line to be added
+            • linenumber    : (int) line number in the source file
+            • location      : (str) see __init__() : None, "doc", ...
+            • current_title : (str) the current doc title.
+
+            RETURNED VALUE : ((str)location, (str)current_title, (bool)stop)
+        """
+        stop = False
+
+        find_title = re.search(SETTINGS["REGEX_FIND_DOCTITLE"], line)
+
+        if find_title is not None:
+            location = "doc"
+            logging.debug("beginning of the doc at line '%s' (#%s)",
+                          line.strip(), linenumber)
+
+        if location == "settings":
+            separator = line.find(":")
+
+            if separator >= 0:
+                if SETTINGS.init_from_line(line) != 0:
+                    logging.error("! An error occured : " \
+                                  "stop reading the documentation source file.")
+                    self.errors.append("Can't read the " \
+                                       "line '{0}' (#{1})".format(line, linenumber))
+                    stop = True
+            elif len(line.strip()) > 0:
+                logging.error("! (reading the documentation source file) " \
+                              " Can't read the following line : '%s' (#%s)",
+                              line, linenumber)
+
+        elif location == "doc":
+
+            if find_title is None:
+                self[current_title].append(line)
+            else:
+                try:
+                    new_title = find_title.group("doctitle")
+                except IndexError as error:
+                    logging.error("! An error occured : " \
+                                  "stop reading the documentation source file.")
+                    self.errors.append("Can't read the line '{0}' (#{1}) : " \
+                                       "ill-formed doctitle".format(line, linenumber))
+                    self.errors.append("Error returned by Python :"+str(error))
+                    stop = True
+
+                if new_title in self:
+                    logging.error("! doctitle '%s' already defined !", new_title)
+                    self.errors.append("Doctitle '{0}' already present " \
+                                       "in the documentation source file." \
+                                       "See line '{1}' (#{2})".format(new_title,
+                                                                      line, linenumber))
+
+                self[new_title] = []
+                current_title = new_title
+
+                logging.debug("found a new title : '%s' (#%s)", new_title, linenumber)
+
+        return location, current_title, stop
+
 #///////////////////////////////////////////////////////////////////////////////
 def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitymode):
     """
-        Update the documentation in a file.
+        pimydoc_a_file()
         ________________________________________________________________________
+
+        Update the documentation in a file.
 
         Read a target file, removed the old documentation and replace it by the
         new one described in <docsrc>.
         ________________________________________________________________________
 
         ARGUMENTS :
-        • targetfile_name           : name of the file to be modified
-        • docsrc                    : a DocumentationSource object
-        • just_remove_pimydoc_lines : if True, nothing is added but the pimydoc
-                                      lines of documentation are removed.
+        • targetfile_name           : (str) name of the file to be modified
+        • docsrc                    : (DocumentationSource) doc content
+        • just_remove_pimydoc_lines : (bool) if True, nothing is added but the
+                                      pimydoc lines of documentation are removed.
         • securitymode              : (bool) True if the backup files created
                                       by this function have to be kept.
 
@@ -507,17 +512,18 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
 
     def rewrite_new_targetfile(targetfile_name, just_remove_pimydoc_lines):
         """
-            rewrite_new_targetfile() : this function is a part of the pimydoc_a_file()
-            function.
+            rewrite_new_targetfile()
+
+            this function is a subfunction of the pimydoc_a_file() function.
             ________________________________________________________________________
 
             Rewrite the target file with the documentation to be added.
             ________________________________________________________________________
 
             ARGUMENTS :
-            • targetfile_name           : name of the file to be modified
-            • just_remove_pimydoc_lines : if True, nothing is added but the pimydoc
-                                          lines of documentation are removed.
+            • targetfile_name           : (str) name of the file to be modified
+            • just_remove_pimydoc_lines : (bool) if True, nothing is added but the
+                                          pimydoc lines of documentation are removed.
 
             no RETURNED VALUE
         """
@@ -525,8 +531,11 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
             for linenumber, line in enumerate(targetcontent):
 
                 # let's add a "normal" line, i.e. everything but a Pimydoc-docline.
-                if SETTINGS["STARTSYMB_IN_DOC"] not in line:
+                if SETTINGS["STARTSYMB_IN_DOC"] not in line and \
+                   SETTINGS["STARTSYMB_IN_DOC"].rstrip() not in line:
                     newtargetfile.write(line)
+                else:
+                    logging.debug("Line removed from '%s' : '%s'", targetfile_name, line.strip())
 
                 if linenumber in lines_with_trigger:
                     # let's add the expected documentation :
@@ -540,9 +549,10 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
                         # what is the "startstring", i.e. the string in <line>
                         # before the doc title ?
                         if profile == "Python":
-                            # todo : expliquer en quoi consiste le profile "Python"
-                            _line = line.replace("\t",
-                                                 " "*SETTINGS["PROFILE_PYTHON_SPACENBR_FOR_A_TAB"])
+                            if SETTINGS["PROFILE_PYTHON_SPACENBR_FOR_A_TAB"] > 0:
+                                _line = \
+                                  line.replace("\t",
+                                               " "*SETTINGS["PROFILE_PYTHON_SPACENBR_FOR_A_TAB"])
                             startstring = _line[:_line.find(doc_title)]
                         else:
                             startstring = line[:line.find(doc_title)]
@@ -553,16 +563,12 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
                                 new_docline, new_doclinefeed = \
                                     remove_and_return_linefeed(new_docline)
                                 if new_doclinefeed == "":
-                                    # todo : expliquer que si une docline ne se termine pas par un
-                                    # linefeed
-                                    # (=parce que cette docline apparaît comme la dernière ligne du
-                                    # fichier
-                                    #   documentation source file, alors on est quand même obligé
-                                    # de considérer
-                                    #  que la docline forme une ligne (=texte + linefeed)
+                                    # a special case : see README.md, "(2.1.1) a special case"
                                     new_doclinefeed = "\n"
                                 new_docline = new_docline.rstrip()
                                 new_docline += new_doclinefeed
+                            logging.debug("+ (%s characters) '%s'",
+                                          len(new_docline), new_docline.replace(" ", "_"))
                             newtargetfile.write(new_docline)
 
     # ----------------------------
@@ -624,17 +630,24 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
     logging.debug("--- done with %s", targetfile_name)
 
 #///////////////////////////////////////////////////////////////////////////////
-def pimydoc(args, just_remove_pimydoc_lines, docsrc):
+def pimydoc(args, docsrc):
     """
         pimydoc() function
         ____________________________________________________________________
 
-        to be called from another script after args  has been filled : this
-        function doesn't read the arguments on the command line.
+        Main function of the program : insert and add the documentation
+        stored in <docsrc> in the files given by <args>.
+
+        To be called from another script after args  has been filled.
+        This function doesn't read the arguments on the command line.
         ____________________________________________________________________
 
-        no ARGUMENT, no RETURNED VALUE
-        todo
+        ARGUMENTS :
+        • args                      : (argparse.Namespace) args from the
+                                      commande line.
+        • docsrc                    : (DocumentationSource object) doc content
+
+        no RETURNED VALUE
     """
     number_of_files = 0
     number_of_discarded_files = 0
@@ -650,7 +663,7 @@ def pimydoc(args, just_remove_pimydoc_lines, docsrc):
                     number_of_discarded_files += 1
                 else:
                     pimydoc_a_file(fullname, docsrc,
-                                   just_remove_pimydoc_lines, args.securitymode)
+                                   args.remove, args.securitymode)
             else:
                 number_of_discarded_files += 1
                 if args.vvv is True or args.verbose == 2:
@@ -669,16 +682,16 @@ def main():
 
         Main entry point. Fill the args variable. Launch the pimydoc()
         function.
-
-        exit codes
-        | |  0 if success
-        | | -1 if the documentation source file doesn't exist
-        | | -2 if the documentation source file is ill-formed
         ________________________________________________________________________
 
         no PARAMETER
 
         no RETURNED VALUE
+
+        exit codes
+        | |  0 if success
+        | | -1 if the documentation source file doesn't exist
+        | | -2 if the documentation source file is ill-formed
     """
     args = CommandLineParser().get_args()
 
@@ -716,19 +729,15 @@ def main():
             logging.error("=== leaving pimydoc ===")
             sys.exit(-2)
 
-    just_remove_pimydoc_lines = False
     if args.remove:
         logging.info("Let's remove every pimydoc line from the source directory.")
-        just_remove_pimydoc_lines = True
 
-    pimydoc(args, just_remove_pimydoc_lines, docsrc)
+    pimydoc(args, docsrc)
 
     logging.info("=== pimydoc : exit point ===")
 
     sys.exit(0)
 
-#///////////////////////////////////////////////////////////////////////////////
-#/////////////////////////////// STARTING POINT ////////////////////////////////
 #///////////////////////////////////////////////////////////////////////////////
 if __name__ == '__main__':
     main()

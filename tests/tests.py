@@ -41,7 +41,8 @@ def dirhash(path):
         dirhash()
         ________________________________________________________________________
 
-        Return the hash value of an directory tree.
+        Return the hash value of an directory tree. File whose name ends in
+        "~" are discarded.
         ________________________________________________________________________
 
         ARGUMENT : (str)path, the path of the directory tree.
@@ -78,12 +79,18 @@ def dirhash(path):
             return False, None
 
     for root, _, files in os.walk(path):
-        for fpath in [os.path.join(root, f) for f in files]:
-            is_ok, reshash = filehash(fpath)
-            if is_ok:
-                sha.update(reshash.encode())
+        for fpath in [os.path.join(root, f) for f in sorted(files)]:
+            if not fpath.endswith("~"):
+                is_ok, reshash = filehash(fpath)
+                if is_ok:
+                    sha.update(reshash.encode())
 
     return sha.hexdigest()
+
+#print("??", dirhash(os.path.join(".", "tests", "test0")))
+#print(dirhash(os.path.join(".", "tests", "current_test")))
+#import sys
+#sys.exit()
 
 # path to the temp directory where the files will be modified :
 PATH_TO_CURRENT_TEST = os.path.join(os.getcwd(), "tests", "current_test")
@@ -94,11 +101,20 @@ Args = collections.namedtuple("args",
                                "securitymode",
                                "sourcepath",
                                "verbose", "vv", "vvv"])
+
+# ARGS : standard values
 ARGS = Args(docsrcfile=os.path.join(PATH_TO_CURRENT_TEST, "pimydoc"),
             remove=False,
             securitymode=False,
             sourcepath=PATH_TO_CURRENT_TEST,
             verbose=0, vv=False, vvv=False)
+
+# ARGS + --remove :
+ARGS_R = Args(docsrcfile=os.path.join(PATH_TO_CURRENT_TEST, "pimydoc"),
+              remove=True,
+              securitymode=False,
+              sourcepath=PATH_TO_CURRENT_TEST,
+              verbose=0, vv=False, vvv=False)
 
 if os.path.exists(PATH_TO_CURRENT_TEST):
     shutil.rmtree(PATH_TO_CURRENT_TEST)
@@ -134,15 +150,15 @@ class Tests(unittest.TestCase):
                 tests/test#n directory.
                 ________________________________________________________________
         """
-        # If you want to run only one test :
-        # for test_number in [8,]:
+        # If you want to choose the test to be runned:
+        #for test_number in [8,]:
         for test_number in range(8+1):
 
             test_path = os.path.join(os.getcwd(), "tests", "test"+str(test_number))
+            print("Testing "+test_path)
             shutil.copytree(os.path.join(test_path), PATH_TO_CURRENT_TEST)
 
             pimydoc.pimydoc(args=ARGS,
-                            just_remove_pimydoc_lines=False,
                             docsrc=pimydoc.DocumentationSource(ARGS.docsrcfile))
 
             computed_hash = dirhash(PATH_TO_CURRENT_TEST)
@@ -153,13 +169,35 @@ class Tests(unittest.TestCase):
 
             shutil.rmtree(PATH_TO_CURRENT_TEST)
 
-            self.assertEqual(computed_hash, {0:"3e6ce8685299f20d79fcf12e50e34a33",
-                                             1:"8e3204c77be1637a326171f67307146e",
-                                             2:"6bfd068924de5a2c1dcfda3251392831",
-                                             3:"de2aab410c93d14460c9655114991657",
-                                             4:"9a71553228c3b8ca9c85e50ca766d37f",
-                                             5:"ca16119770f0309c09770233a47b78c1",
-                                             6:"e5d05f057e6b72e261c3a09bc2bd0317",
-                                             7:"e10aadbb96a51ea8be9f821000aa15c4",
-                                             8:"447a6203c5c4630b6fd96d7cff6260a6",
+            self.assertEqual(computed_hash, {0:"cb94b5865f7a48cf9c934e9afa9a55f1",
+                                             1:"3d35e1af0b0350cf53645e3169149353",
+                                             2:"43cf3a1be20e5e3ba08a205c4ec0a76f",
+                                             3:"b16ac38da7d743c1e6b2b3036ea181cc",
+                                             4:"5e2726dd3d036e09a25553826f06b1d3",
+                                             5:"0babc63109c2c7fcf833429782a7e093",
+                                             6:"d72da8d969b03abd18c192e1a7ae3466",
+                                             7:"2ef2d151196e1cead4c584002ce59cdf",
+                                             8:"fb80d1ded9adc9a5b7d31f33ae0259d3",
                                             }[test_number])
+
+    #///////////////////////////////////////////////////////////////////////////
+    def test_pimydoc_function__r(self):
+        """
+                Tests.test_pimydoc_function__r()
+                ________________________________________________________________
+
+                test of the pimydoc() function with the --remove option.
+                ________________________________________________________________
+        """
+        test_path = os.path.join(os.getcwd(), "tests", "test5")
+        print("Testing "+test_path)
+        shutil.copytree(os.path.join(test_path), PATH_TO_CURRENT_TEST)
+
+        pimydoc.pimydoc(args=ARGS_R,
+                        docsrc=pimydoc.DocumentationSource(ARGS.docsrcfile))
+
+        computed_hash = dirhash(PATH_TO_CURRENT_TEST)
+
+        shutil.rmtree(PATH_TO_CURRENT_TEST)
+
+        self.assertEqual(computed_hash, "7943d7569346d5ceba15dfd3eb34b71c")

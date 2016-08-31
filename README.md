@@ -7,13 +7,208 @@ than the ones installed with Python3.
 
 Insert documentation in text files and update it.
 
-#(2) purpose
+Example :
+
+    -> inside "pimydoc", documentation source file.
+    [pimydoc]
+    STARTSYMB_IN_DOC :¤ 
+    [ressource::001]
+    An interesting ressource.
+    [ressource::002]
+    Another interesting ressource.
+
+    -> inside a source file :
+    def foo(arg):
+        """
+           ressource::001
+        """
+        # ressource::002
+        print("...")
+
+The source file becomes :
+
+    def foo(arg):
+        """
+           ressource::001
+           ¤ An interesting ressource.
+        """
+        # ressource::002
+        # ¤ another interesting ressource.
+        print("...")
+
+    
+#(2) purpose and file format
 
 Pimydoc inserts in source files the text paragraphs stored in "pimydoc", the
 documentation source file. Moreover, the script updates the text paragraphs
 already present in the source files if the documentation source file has
 changed.
 
+## (2.1) documentation source file (docsrc) format
+The file "pimydoc" is mandatory : it contains the documentation to be inserted
+in the source directory. After an optional header beginning with the string
+"[pimydoc]", the documentation itself is divided along doctitles written
+in brackets, like "[doctitle1]", followed by **docline**, a line followed
+by linefeed character(s).
+
+    ### a simple example of a "documentation source file" :
+    [pimydoc]
+    REGEX_SOURCE_FILTER : .+py$
+
+    [doctitle1]
+    This line will be added as the first line of the "doctitle1"  
+    This line will be added as the first line of the "doctitle1"  
+
+    [doctitle2]
+    This line will be added as the first line of the "doctitle2"
+
+This example will find all Python files (see REGEX_SOURCE_FILTER) and add after
+each "doctitle1" mention the two lines given, and add after each "doctitle2"
+the line given.
+
+###(2.1.1) a special case
+
+If a docline is not followed by some linefeed character(s) (e.g. if this line
+is the last of the file), the script will automatically add a linefeed.
+
+###(2.1.2) comments
+Comments are lines beginning with the "###" string. Comments added at the end of
+a line like "some stuff ### mycomment" are not allowed.
+
+###(2.1.3) header
+
+The header is optional and always begin with the "[pimydoc]" string.
+The header's content is made of single lines following the "KEY:VALUE"
+format. The available keys are (the values are given as examples) :
+
+    REGEX_SOURCE_FILTER : .+py$
+    REGEX_FIND_DOCTITLE : ^\[(?P<doctitle>.+)\]$
+    STARTSYMB_IN_DOC :| | 
+    PROFILE_PYTHON_SPACENBR_FOR_A_TAB : 4
+    REMOVE_FINAL_SPACES_IN_NEW_DOCLINES : True
+
+! Beware, the syntax "KEY = VALUE" is not supported.
+    
+#### • REGEX_SOURCE_FILTER : .+py$
+Python regex describing which file in the source directory have to be read
+and -if required- modified.
+
+Examples :
+
+REGEX_SOURCE_FILTER : .+py$
+... for Python files
+    
+REGEX_SOURCE_FILTER : .+cpp$|.+h$
+... for C++ files
+
+Beware, the format string "*.py" is not supported.
+
+#### • REGEX_FIND_DOCTITLE : ^\[(?P<doctitle>.+)\]$
+Python regex describing in the documentation source file, NOT in the source files
+the the way the doctiles appear. The group name (?P<doctitle>) is mandatory.
+
+Examples :
+
+REGEX_FIND_DOCTITLE : ^\[(?P<doctitle>.+)\]$
+
+... if doctitles appear as "[mydoctitle]" in the documentation source file.
+
+REGEX_FIND_DOCTITLE : ^\<(?P<doctitle>.+)\>$
+
+... if doctitles appear as "<mydoctitle>" in the documentation source file.
+
+#### • STARTSYMB_IN_DOC :| |
+
+Characters appearing in source files juste before a doc line.
+The STARTSYMB_IN_DOC characters may be preceded by other characters, like
+spaces, "#", "//", and so on :
+
+    """
+       | | doctitle
+    """
+    
+    # | | doctitle
+    
+    // | | doctitle
+
+    /*
+       | | doctitle
+    */
+
+You may want to add a space before and after STARTSYMB_IN_DOC; there's a
+difference between "STARTSYMB_IN_DOC :| |" and "STARTSYMB_IN_DOC :| | ".
+    
+#### • PROFILE_PYTHON_SPACENBR_FOR_A_TAB : 4
+For Python files : a tabulation in a docline may be replaced by spaces. The
+PROFILE_PYTHON_SPACENBR_FOR_A_TAB key sets the number of spaces replacing each
+tabulation. If you don't want any replacement, set this key to 0.
+
+Examples :
+
+PROFILE_PYTHON_SPACENBR_FOR_A_TAB : 4
+
+(standard; see https://www.python.org/dev/peps/pep-0008/#tabs-or-spaces)
+    
+PROFILE_PYTHON_SPACENBR_FOR_A_TAB : 0
+
+(no replacement)
+    
+#### • REMOVE_FINAL_SPACES_IN_NEW_DOCLINES : True
+If set to True, the leading spaces at the end of docline added by Pimydoc are
+removed.
+    
+Examples :
+
+REMOVE_FINAL_SPACES_IN_NEW_DOCLINES : True
+
+REMOVE_FINAL_SPACES_IN_NEW_DOCLINES : False
+        
+##(2.2) how to add doctitles in the files stored in the source directory
+You juste have to add on a line the name of a doctitle (do **not follow the
+format described in REGEX_FIND_DOCTITLE, e.g. "[ressource::001]"**, this
+regex being used only in the documentation source file).
+The documentation (the doclines) is added by inserting the doclines **after the
+line containing the doctitle**. **Pimydoc will add before each docline the same
+characters appearing before the doctitle.**
+
+By example :
+
+    -> inside "pimydoc", documentation source file.
+    [ressource::001]
+    An interesting ressource.
+
+    -> inside a source file :
+    def foo(arg):
+        """
+           ressource::001
+        """
+        print("...")
+
+The source file becomes :
+
+    def foo(arg):
+        """
+           ressource::001
+           ¤ An interesting ressource.
+        """
+        print("...")
+    
+##(2.3) profiles
+According to the extension of the files read in the source directories, Pimydoc
+slightly changes the way it adds and updates the documentation. The known
+profiles are :
+
+### • "Python"
+for files written in Python2 or Python3.
+
+• see PROFILE_PYTHON_SPACENBR_FOR_A_TAB .
+    
+### • "CPP" (i.e. C++)
+nothing is changed compared to the default profile.
+
+### • "default"
+default profile
+        
 #(3) installation and tests
 
     Don't forget : Pimydoc is Python3 project, not a Python2 project !
@@ -27,7 +222,7 @@ changed.
 
     How to run the tests :
     
-    $ python -m unittest tests/tests.py
+    $ python3 -m unittest tests/tests.py
 
     or
     
@@ -36,10 +231,48 @@ changed.
 #(4) workflow
 
     $ pimydoc -h
-    ... will display all known parameters.
+    ... displays all known parameters.
     $ pimydoc --version
-    ... will display the version of the current script.
+    ... displays the version of the current script.
+    
+## basic options
+    
+    $ pimydoc
+    ... searches a "pimydoc" file in the current directory, reads it and parses
+        the current directory, searching files to be modified.
 
+    $ pimydoc --sourcepath path/to/the/targetpath --docsrcfile name_of_the_docsrc_file
+    ... gives to the script the name of the source path (=to be modified) and
+        the name of the documentation source file (e.g. "pimydoc")
+
+## advanced options
+
+### removing the documentation added by Pimydoc
+
+    $ pimydoc --remove
+    $ pimydoc -r
+    ... will remove the documentation added by Pimydoc.
+    
+### security mode
+
+    $ pimydoc --securitymode
+    $ pimydoc -s
+    ... will not delete the backup files created by Pimydoc before modifying the
+        source files.
+    
+### verbosity
+
+    $ pimydoc --verbose 0
+    ... displays only error messages
+
+    $ pimydoc --verbose 1
+    $ pimydoc -vv
+    ... both display only error messages and info messages
+
+    $ pimydoc --verbose 2
+    $ pimydoc -vvv
+    ... both display all messages, including debug messages
+        
 #(5) project's author and project's name
 
 Xavier Faure (suizokukan / 94.23.197.37) : suizokukan @T orange D@T fr
@@ -78,9 +311,36 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 	
 #(7) history / future versions
 
-- 0.1.7 : documentation/alpha -> beta
+##v 0.1.7(beta) (2016_08_29) : documentation improved/project in beta stage.
 
-v 0.1.6(alpha) a docline can be inside a commentary beginning with "#" or "//"
+    • improved the documentation
+
+    • fixed a bug in the tests : the filenames have to be sorted in order to
+      hash a directory exactly the same way on different computers.
+    • Fixed a bug in rewrite_new_targetfile() : lines containing STARTSYMB_IN_DOC or
+      STARTSYMB_IN_DOC.rstrip() have to be discarded.
+      Fixed the corresponding tests.
+    • Fixed a bug in tests/tests.py : files whose name ends in "~" are discarded.
+
+    • removed from the pimydoc() function the "just_remove_pimydoc_lines" argument,
+      since the value can be deduced from args.remove
+    • added a test : Tests.test_pimydoc_function__r() to test the --remove argument.  
+    • added the file : tests/__init__.py
+    • removed the unused constant STARTSYMB_IN_DOC__ESCAPE
+    • rewrite_new_targetfile() : added a debug message    
+    • added tests/test8/ which should have been added in 0.1.6
+    • improved error message in newline()
+    • modified rewrite_new_targetfile() : if PROFILE_PYTHON_SPACENBR_FOR_A_TAB
+      is set to 0, no tabulation is replaced.
+    • DocumentationSource.newline() is now a method (not a subfunction
+      of DocumentationSource.__init__() anymore)
+    
+    • unittests : 1 test (passed) 
+    • raw Pylint invocation : 10.0/10.0 for all scripts.
+    • version packaged and sent to Pypi (https://pypi.python.org/pypi/Pimydoc)
+ 
+##v 0.1.6(alpha) (2016_08_28) : a docline can be inside a commentary beginning with "#" or "//"
+
     • modified rewrite_new_targetfile() to handle doclines to be added after
       some symbols like "#" (Python) or "//" (C/C++). Added some tests to test
       this feature.
@@ -93,7 +353,8 @@ v 0.1.6(alpha) a docline can be inside a commentary beginning with "#" or "//"
     • raw Pylint invocation : 10.0/10.0 for all scripts.
     • version packaged and sent to Pypi (https://pypi.python.org/pypi/Pimydoc)
     
-v 0.1.5(alpha) (2016_08_27) first unittests
+##v 0.1.5(alpha) (2016_08_27) first unittests
+
     • add the "tests/" directory
     
     • fixed a bug in DocumentationSource.__init__() : .format() syntax has to
@@ -112,7 +373,8 @@ v 0.1.5(alpha) (2016_08_27) first unittests
     - raw Pylint invocation : 10.0/10.0 for all scripts.
     - version packaged and sent to Pypi (https://pypi.python.org/pypi/Pimydoc)
  
-v 0.1.4(alpha) (2016_08_26) first version available on Pypi
+##v 0.1.4(alpha) (2016_08_26) first version available on Pypi
+
     • Pimydoc is now available on Pypi : https://pypi.python.org/pypi/Pimydoc
 
     • improved the documentation
@@ -120,7 +382,7 @@ v 0.1.4(alpha) (2016_08_26) first version available on Pypi
     • raw Pylint invocation : 10.0/10.0 for all scripts.
     • version packaged and sent to Pypi (https://pypi.python.org/pypi/Pimydoc)
 
-older versions :
+##older versions :
     
     + 0.1.3(alpha) :
         • pimydoc is callable from a Python script.
