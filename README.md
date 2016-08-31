@@ -317,6 +317,7 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
     • Fixed a bug in tests/tests.py : files whose name ends in "~" are discarded.
 
     • added the file : tests/__init__.py
+    • removed the unused constant STARTSYMB_IN_DOC__ESCAPE
     • rewrite_new_targetfile() : added a debug message    
     • added tests/test8/ which should have been added in 0.1.6
     • improved error message in newline()

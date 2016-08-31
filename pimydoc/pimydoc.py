@@ -142,8 +142,6 @@ class Settings(dict):
                                 documentation added in the source files.
                                 See below for more details (docsrc format)
 
-        • STARTSYMB_IN_DOC__ESCAPE : re.escape(STARTSYMB_IN_DOC)
-
         • PROFILE_PYTHON_SPACENBR_FOR_A_TAB : (int) for Python files, number of
                                               spaces replacing a tab character.
 
@@ -202,7 +200,6 @@ class Settings(dict):
                                                     # to remove this line since this line contains
                                                     # the STARTSYMB_IN_DOC symbols defined in the
                                                     # documentation source file.
-        self["STARTSYMB_IN_DOC__ESCAPE"] = re.escape(self["STARTSYMB_IN_DOC"])
         self["PROFILE_PYTHON_SPACENBR_FOR_A_TAB"] = 4
         self["REMOVE_FINAL_SPACES_IN_NEW_DOCLINES"] = "True"
 
@@ -243,10 +240,6 @@ class Settings(dict):
                 elif key == "STARTSYMB_IN_DOC":
                     self[key] = value
                     logging.debug("key '%s' set to '%s' (%s).", key, self[key], type(self[key]))
-
-                    self["STARTSYMB_IN_DOC__ESCAPE"] = re.escape(self["STARTSYMB_IN_DOC"])
-                    logging.debug("key 'STARTSYMB_IN_DOC__ESCAPE' set to '%s' (%s).",
-                                  self["STARTSYMB_IN_DOC__ESCAPE"], type(self[key]))
 
                 elif key == "PROFILE_PYTHON_SPACENBR_FOR_A_TAB":
                     self[key] = int(value)
