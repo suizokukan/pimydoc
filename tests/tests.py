@@ -101,11 +101,20 @@ Args = collections.namedtuple("args",
                                "securitymode",
                                "sourcepath",
                                "verbose", "vv", "vvv"])
+
+# ARGS : standard values
 ARGS = Args(docsrcfile=os.path.join(PATH_TO_CURRENT_TEST, "pimydoc"),
             remove=False,
             securitymode=False,
             sourcepath=PATH_TO_CURRENT_TEST,
             verbose=0, vv=False, vvv=False)
+
+# ARGS + --remove :
+ARGS_R = Args(docsrcfile=os.path.join(PATH_TO_CURRENT_TEST, "pimydoc"),
+              remove=True,
+              securitymode=False,
+              sourcepath=PATH_TO_CURRENT_TEST,
+              verbose=0, vv=False, vvv=False)
 
 if os.path.exists(PATH_TO_CURRENT_TEST):
     shutil.rmtree(PATH_TO_CURRENT_TEST)
@@ -141,7 +150,7 @@ class Tests(unittest.TestCase):
                 tests/test#n directory.
                 ________________________________________________________________
         """
-        # If you want to choose the test to be runed:
+        # If you want to choose the test to be runned:
         #for test_number in [8,]:
         for test_number in range(8+1):
 
@@ -150,7 +159,6 @@ class Tests(unittest.TestCase):
             shutil.copytree(os.path.join(test_path), PATH_TO_CURRENT_TEST)
 
             pimydoc.pimydoc(args=ARGS,
-                            just_remove_pimydoc_lines=False,
                             docsrc=pimydoc.DocumentationSource(ARGS.docsrcfile))
 
             computed_hash = dirhash(PATH_TO_CURRENT_TEST)
@@ -171,3 +179,25 @@ class Tests(unittest.TestCase):
                                              7:"2ef2d151196e1cead4c584002ce59cdf",
                                              8:"fb80d1ded9adc9a5b7d31f33ae0259d3",
                                             }[test_number])
+
+    #///////////////////////////////////////////////////////////////////////////
+    def test_pimydoc_function__r(self):
+        """
+                Tests.test_pimydoc_function__r()
+                ________________________________________________________________
+
+                test of the pimydoc() function with the --remove option.
+                ________________________________________________________________
+        """
+        test_path = os.path.join(os.getcwd(), "tests", "test5")
+        print("Testing "+test_path)
+        shutil.copytree(os.path.join(test_path), PATH_TO_CURRENT_TEST)
+        
+        pimydoc.pimydoc(args=ARGS_R,
+                        docsrc=pimydoc.DocumentationSource(ARGS.docsrcfile))
+
+        computed_hash = dirhash(PATH_TO_CURRENT_TEST)
+
+        shutil.rmtree(PATH_TO_CURRENT_TEST)
+
+        self.assertEqual(computed_hash, "7943d7569346d5ceba15dfd3eb34b71c")

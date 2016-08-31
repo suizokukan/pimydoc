@@ -316,6 +316,9 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
       Fixed the corresponding tests.
     • Fixed a bug in tests/tests.py : files whose name ends in "~" are discarded.
 
+    • removed from the pimydoc() function the "just_remove_pimydoc_lines" argument,
+      since the value can be deduced from args.remove
+    • added a test : Tests.test_pimydoc_function__r() to test the --remove argument.  
     • added the file : tests/__init__.py
     • removed the unused constant STARTSYMB_IN_DOC__ESCAPE
     • rewrite_new_targetfile() : added a debug message    

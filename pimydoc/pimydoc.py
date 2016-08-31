@@ -647,7 +647,7 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
     logging.debug("--- done with %s", targetfile_name)
 
 #///////////////////////////////////////////////////////////////////////////////
-def pimydoc(args, just_remove_pimydoc_lines, docsrc):
+def pimydoc(args, docsrc):
     """
         pimydoc() function
         ____________________________________________________________________
@@ -661,7 +661,6 @@ def pimydoc(args, just_remove_pimydoc_lines, docsrc):
 
         ARGUMENTS :
         • args                      : (argparse.Namespace)
-        • just_remove_pimydoc_lines : (bool) todo
         • docsrc                    : todo
 
         no RETURNED VALUE
@@ -680,7 +679,7 @@ def pimydoc(args, just_remove_pimydoc_lines, docsrc):
                     number_of_discarded_files += 1
                 else:
                     pimydoc_a_file(fullname, docsrc,
-                                   just_remove_pimydoc_lines, args.securitymode)
+                                   args.remove, args.securitymode)
             else:
                 number_of_discarded_files += 1
                 if args.vvv is True or args.verbose == 2:
@@ -746,12 +745,10 @@ def main():
             logging.error("=== leaving pimydoc ===")
             sys.exit(-2)
 
-    just_remove_pimydoc_lines = False
     if args.remove:
         logging.info("Let's remove every pimydoc line from the source directory.")
-        just_remove_pimydoc_lines = True
 
-    pimydoc(args, just_remove_pimydoc_lines, docsrc)
+    pimydoc(args, docsrc)
 
     logging.info("=== pimydoc : exit point ===")
 
