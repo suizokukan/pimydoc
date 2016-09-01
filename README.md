@@ -70,6 +70,8 @@ the line given.
 
 If a docline is not followed by some linefeed character(s) (e.g. if this line
 is the last of the file), the script will automatically add a linefeed.
+The added linefeed is either the last linefeed detected by reading the file,
+either "\r\n" for Windows systems either "\n" in the other cases.
 
 ###(2.1.2) comments
 Comments are lines beginning with the "###" string. Comments added at the end of

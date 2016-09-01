@@ -42,6 +42,7 @@
 import argparse
 import logging
 import os
+import platform
 import re
 import shutil
 import sys
@@ -527,6 +528,10 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
 
             no RETURNED VALUE
         """
+        # we store the last linefeed characters in order to add it if necessary
+        # (see README.md, "(2.1.1) a special case")
+        last_linefeed = None
+
         with open(targetfile_name, "w") as newtargetfile:
             for linenumber, line in enumerate(targetcontent):
 
@@ -541,6 +546,8 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
                     # let's add the expected documentation :
                     doc_content = docsrc[lines_with_trigger[linenumber]]
                     doc_title = lines_with_trigger[linenumber]
+
+                    _, last_linefeed = remove_and_return_linefeed(line)
 
                     if just_remove_pimydoc_lines is False:
                         logging.info("+ adding some doc in '%s'; doctitle='%s'",
@@ -564,7 +571,15 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
                                     remove_and_return_linefeed(new_docline)
                                 if new_doclinefeed == "":
                                     # a special case : see README.md, "(2.1.1) a special case"
-                                    new_doclinefeed = "\n"
+                                    if last_linefeed is not None:
+                                        new_doclinefeed += last_linefeed
+                                    elif platform.system() == "Windows":
+                                        new_doclinefeed += "\r\n"
+                                    else:
+                                        new_doclinefeed += "\n"
+                                    logging.debug("special case : " \
+                                                  "a linefeed has been added to '%s'",
+                                                  new_docline)
                                 new_docline = new_docline.rstrip()
                                 new_docline += new_doclinefeed
                             logging.debug("+ (%s characters) '%s'",
