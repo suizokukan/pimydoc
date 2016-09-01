@@ -316,7 +316,10 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 ##v 0.1.8(beta) (2016_09_XX) : 
 
     • improved the documentation
-        
+    • rewrite_new_targetfile() : fixed the way a linefeed is added to a docline
+      without linefeed : either the last linefeed characters read in the file,
+      either \r\n on Windows systems, either "\n".
+    
 ##v 0.1.7(beta) (2016_08_29) : documentation improved/project in beta stage.
 
     • improved the documentation
