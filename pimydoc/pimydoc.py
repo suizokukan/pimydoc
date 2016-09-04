@@ -532,13 +532,13 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
         # (see README.md, "(2.1.1) a special case")
         last_linefeed = None
 
-        with open(targetfile_name, "w") as newtargetfile:
+        with open(targetfile_name, "wb") as newtargetfile:
             for linenumber, line in enumerate(targetcontent):
 
                 # let's add a "normal" line, i.e. everything but a Pimydoc-docline.
                 if SETTINGS["STARTSYMB_IN_DOC"] not in line and \
                    SETTINGS["STARTSYMB_IN_DOC"].rstrip() not in line:
-                    newtargetfile.write(line)
+                    newtargetfile.write(line.encode(encoding="utf-8"))
                 else:
                     logging.debug("Line removed from '%s' : '%s'", targetfile_name, line.strip())
 
@@ -584,7 +584,7 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
                                 new_docline += new_doclinefeed
                             logging.debug("+ (%s characters) '%s'",
                                           len(new_docline), new_docline.replace(" ", "_"))
-                            newtargetfile.write(new_docline)
+                            newtargetfile.write(new_docline.encode(encoding="utf-8"))
 
     # ----------------------------
     # here begins pimydoc_a_file()

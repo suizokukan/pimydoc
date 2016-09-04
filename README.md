@@ -319,6 +319,10 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
     • rewrite_new_targetfile() : fixed the way a linefeed is added to a docline
       without linefeed : either the last linefeed characters read in the file,
       either \r\n on Windows systems, either "\n".
+    • rewrite_new_targetfile() opens the files in binary mode to avoid that
+      Windows OS modified the linefeed characters to be added at the end
+      of doclines. Without this modification, the tests can't pass on Windows
+      systems since the test files use the \n linefeed, NOT the \r\n one. 
     
 ##v 0.1.7(beta) (2016_08_29) : documentation improved/project in beta stage.
 
