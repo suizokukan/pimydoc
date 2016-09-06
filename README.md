@@ -325,7 +325,9 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
       systems since the test files use the \n linefeed, NOT the \r\n one. 
     • open() uses the option "encoding='utf-8" so that the script doesn't use
       the cp1252 encoding on Windows systems.
-        
+    • (tests.py) the PATH_TO_CURRENT_TEST directory is removed at the
+      beginning of each test function.
+      
 ##v 0.1.7(beta) (2016_08_29) : documentation improved/project in beta stage.
 
     • improved the documentation
