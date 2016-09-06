@@ -323,7 +323,9 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
       Windows OS modified the linefeed characters to be added at the end
       of doclines. Without this modification, the tests can't pass on Windows
       systems since the test files use the \n linefeed, NOT the \r\n one. 
-    
+    • open() uses the option "encoding='utf-8" so that the script doesn't use
+      the cp1252 encoding on Windows systems.
+        
 ##v 0.1.7(beta) (2016_08_29) : documentation improved/project in beta stage.
 
     • improved the documentation

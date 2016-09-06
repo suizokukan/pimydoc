@@ -400,7 +400,7 @@ class DocumentationSource(dict):
         # None is mandatory if a blank line appears before the first title
         location = None # None / settings / doc
 
-        with open(filename) as src:
+        with open(filename, encoding="utf-8") as src:
             stop = False
             for linenumber, line in enumerate(src.readlines()):
 
@@ -602,7 +602,7 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
     # -------------------------------------------
     # let's read the content of the target file :
     try:
-        with open(targetfile_name, 'r') as target_file:
+        with open(targetfile_name, 'r', encoding="utf-8") as target_file:
             targetcontent = target_file.readlines()
     except FileNotFoundError as error:
         logging.error("! Can't read the content of the file '%s'", targetfile_name)
