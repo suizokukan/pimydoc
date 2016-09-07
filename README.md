@@ -313,7 +313,7 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 	
 #(7) history / future versions
 
-##v 0.1.8(beta) (2016_09_XX) : fixed issue #001
+##v 0.1.8(beta) (2016_09_07) : fixed issue #001
 
     • rewrite_new_targetfile() : fixed the way a linefeed is added to a docline
       without linefeed : either the last linefeed characters read in the file,
@@ -331,7 +331,7 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
     
     • improved the documentation
 
-    • unittests : 1 test (passed) 
+    • unittests : 2 tests (passed) 
     • raw Pylint invocation : 10.0/10.0 for all scripts.
     • version packaged and sent to Pypi (https://pypi.python.org/pypi/Pimydoc)
               
