@@ -312,7 +312,7 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 	                        deleted (default: False)
 	
 #(7) history / future versions
-
+ 
 ##v 0.1.8(beta) (2016_09_07) : fixed issue #001
 
     • rewrite_new_targetfile() : fixed the way a linefeed is added to a docline
