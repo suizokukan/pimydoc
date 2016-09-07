@@ -326,7 +326,9 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
       the cp1252 encoding on Windows systems.
     • (tests.py) the PATH_TO_CURRENT_TEST directory is removed at the
       beginning of each test function.
-
+    • added a rewrite_new_targetfile__line() function to size down the
+      rewrite_new_targetfile() function.
+    
     • improved the documentation
 
     • unittests : 1 test (passed) 

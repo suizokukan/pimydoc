@@ -511,6 +511,46 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
         no RETURNED VALUE
     """
 
+    def rewrite_new_targetfile__line(newtargetfile, new_docline, last_linefeed):
+        """
+            rewrite_new_targetfile__line()
+
+            this function is a subsubfunction of the pimydoc_a_file() function and
+            a subfunction of the rewrite_new_targetfile() function.
+            ________________________________________________________________________
+
+            Write a line in the target file. This required a whole function because
+            of the problem of the various linefeed characters.
+            ________________________________________________________________________
+
+            ARGUMENTS :
+            • newtargetfile             : a file descriptor.
+            • new_docline               : the line to be added
+            • last_linefeed             : the character(s) at the end of the precedent
+                                          lines added before
+
+            no RETURNED VALUE
+        """
+        if SETTINGS["REMOVE_FINAL_SPACES_IN_NEW_DOCLINES"] == "True":
+            new_docline, new_doclinefeed = \
+                remove_and_return_linefeed(new_docline)
+            if new_doclinefeed == "":
+                # a special case : see README.md, "(2.1.1) a special case"
+                if last_linefeed is not None:
+                    new_doclinefeed += last_linefeed
+                elif platform.system() == "Windows":
+                    new_doclinefeed += "\r\n"
+                else:
+                    new_doclinefeed += "\n"
+                logging.debug("special case : " \
+                              "a linefeed has been added to '%s'",
+                              new_docline)
+            new_docline = new_docline.rstrip()
+            new_docline += new_doclinefeed
+        logging.debug("+ (%s characters) '%s'",
+                      len(new_docline), new_docline.replace(" ", "_"))
+        newtargetfile.write(new_docline.encode(encoding="utf-8"))
+
     def rewrite_new_targetfile(targetfile_name, just_remove_pimydoc_lines):
         """
             rewrite_new_targetfile()
@@ -566,25 +606,7 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
 
                         for docline in doc_content:
                             new_docline = startstring+SETTINGS["STARTSYMB_IN_DOC"]+docline
-                            if SETTINGS["REMOVE_FINAL_SPACES_IN_NEW_DOCLINES"] == "True":
-                                new_docline, new_doclinefeed = \
-                                    remove_and_return_linefeed(new_docline)
-                                if new_doclinefeed == "":
-                                    # a special case : see README.md, "(2.1.1) a special case"
-                                    if last_linefeed is not None:
-                                        new_doclinefeed += last_linefeed
-                                    elif platform.system() == "Windows":
-                                        new_doclinefeed += "\r\n"
-                                    else:
-                                        new_doclinefeed += "\n"
-                                    logging.debug("special case : " \
-                                                  "a linefeed has been added to '%s'",
-                                                  new_docline)
-                                new_docline = new_docline.rstrip()
-                                new_docline += new_doclinefeed
-                            logging.debug("+ (%s characters) '%s'",
-                                          len(new_docline), new_docline.replace(" ", "_"))
-                            newtargetfile.write(new_docline.encode(encoding="utf-8"))
+                            rewrite_new_targetfile__line(newtargetfile, new_docline, last_linefeed)
 
     # ----------------------------
     # here begins pimydoc_a_file()
