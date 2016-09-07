@@ -150,12 +150,15 @@ class Tests(unittest.TestCase):
                 tests/test#n directory.
                 ________________________________________________________________
         """
+        if os.path.exists(PATH_TO_CURRENT_TEST):
+            shutil.rmtree(PATH_TO_CURRENT_TEST)
+
         # If you want to choose the test to be runned:
         #for test_number in [8,]:
         for test_number in range(8+1):
 
             test_path = os.path.join(os.getcwd(), "tests", "test"+str(test_number))
-            print("Testing "+test_path)
+            print("(test_pimydoc_function()) Testing "+test_path)
             shutil.copytree(os.path.join(test_path), PATH_TO_CURRENT_TEST)
 
             pimydoc.pimydoc(args=ARGS,
@@ -189,8 +192,11 @@ class Tests(unittest.TestCase):
                 test of the pimydoc() function with the --remove option.
                 ________________________________________________________________
         """
+        if os.path.exists(PATH_TO_CURRENT_TEST):
+            shutil.rmtree(PATH_TO_CURRENT_TEST)
+
         test_path = os.path.join(os.getcwd(), "tests", "test5")
-        print("Testing "+test_path)
+        print("(test_pimydoc_function__r()) Testing "+test_path)
         shutil.copytree(os.path.join(test_path), PATH_TO_CURRENT_TEST)
 
         pimydoc.pimydoc(args=ARGS_R,

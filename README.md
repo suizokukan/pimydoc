@@ -70,6 +70,8 @@ the line given.
 
 If a docline is not followed by some linefeed character(s) (e.g. if this line
 is the last of the file), the script will automatically add a linefeed.
+The added linefeed is either the last linefeed detected by reading the file,
+either "\r\n" for Windows systems either "\n" in the other cases.
 
 ###(2.1.2) comments
 Comments are lines beginning with the "###" string. Comments added at the end of
@@ -310,7 +312,29 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 	                        deleted (default: False)
 	
 #(7) history / future versions
+ 
+##v 0.1.8(beta) (2016_09_07) : fixed issue #001
 
+    • rewrite_new_targetfile() : fixed the way a linefeed is added to a docline
+      without linefeed : either the last linefeed characters read in the file,
+      either \r\n on Windows systems, either "\n".
+    • rewrite_new_targetfile() opens the files in binary mode to avoid that
+      Windows OS modified the linefeed characters to be added at the end
+      of doclines. Without this modification, the tests can't pass on Windows
+      systems since the test files use the \n linefeed, NOT the \r\n one. 
+    • open() uses the option "encoding='utf-8" so that the script doesn't use
+      the cp1252 encoding on Windows systems.
+    • (tests.py) the PATH_TO_CURRENT_TEST directory is removed at the
+      beginning of each test function.
+    • added a rewrite_new_targetfile__line() function to size down the
+      rewrite_new_targetfile() function.
+    
+    • improved the documentation
+
+    • unittests : 2 tests (passed) 
+    • raw Pylint invocation : 10.0/10.0 for all scripts.
+    • version packaged and sent to Pypi (https://pypi.python.org/pypi/Pimydoc)
+              
 ##v 0.1.7(beta) (2016_08_29) : documentation improved/project in beta stage.
 
     • improved the documentation
