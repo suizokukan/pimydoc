@@ -313,9 +313,8 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 	
 #(7) history / future versions
 
-##v 0.1.8(beta) (2016_09_XX) : 
+##v 0.1.8(beta) (2016_09_XX) : fixed issue #001
 
-    • improved the documentation
     • rewrite_new_targetfile() : fixed the way a linefeed is added to a docline
       without linefeed : either the last linefeed characters read in the file,
       either \r\n on Windows systems, either "\n".
@@ -327,7 +326,13 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
       the cp1252 encoding on Windows systems.
     • (tests.py) the PATH_TO_CURRENT_TEST directory is removed at the
       beginning of each test function.
-      
+
+    • improved the documentation
+
+    • unittests : 1 test (passed) 
+    • raw Pylint invocation : 10.0/10.0 for all scripts.
+    • version packaged and sent to Pypi (https://pypi.python.org/pypi/Pimydoc)
+              
 ##v 0.1.7(beta) (2016_08_29) : documentation improved/project in beta stage.
 
     • improved the documentation
