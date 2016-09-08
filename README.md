@@ -315,11 +315,10 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 	
 #(7) history / future versions
 
-##v 0.2(beta) (2016_09_XX) : 
+----v 0.2(beta) (2016_09_XX) : 
 
-    • added a info message at the end of the download_default_pimydoc() function.
-    
-    • updated the documentation
+    • added an info message at the end of the download_default_pimydoc() function.
+    • improved the final message of the pimydoc() function.
 
     • unittests : 2 tests (passed) 
     • raw Pylint invocation : 10.0/10.0 for all scripts.

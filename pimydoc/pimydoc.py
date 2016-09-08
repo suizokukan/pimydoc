@@ -747,10 +747,10 @@ def pimydoc(args, docsrc):
                 if args.vvv is True or args.verbose == 2:
                     logging.info("- discarded '%s'", fullname)
 
-    logging.info("Read %s file(s), modified %s file(s), discarded %s file(s).",
+    logging.info("Read %s file(s), discarded %s file(s), %s file(s) may have been modified.",
                  number_of_files,
-                 number_of_files - number_of_discarded_files,
-                 number_of_discarded_files)
+                 number_of_discarded_files,
+                 number_of_files - number_of_discarded_files)
 
 #///////////////////////////////////////////////////////////////////////////////
 def main():
