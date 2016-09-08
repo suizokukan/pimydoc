@@ -315,6 +315,16 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 	
 #(7) history / future versions
 
+##v 0.2(beta) (2016_09_XX) : 
+
+    • added a info message at the end of the download_default_pimydoc() function.
+    
+    • updated the documentation
+
+    • unittests : 2 tests (passed) 
+    • raw Pylint invocation : 10.0/10.0 for all scripts.
+    • version packaged and sent to Pypi (https://pypi.python.org/pypi/Pimydoc)
+    
 ##v 0.1.9(beta) (2016_09_08) : fixed issue #002, --downloadpimydoc option
 
     • rewrite_new_targetfile : a new exception is caught (UnicodeDecodeError)

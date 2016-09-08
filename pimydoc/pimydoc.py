@@ -376,6 +376,9 @@ def download_default_pimydoc():
         with urllib.request.urlopen(DEFAULTCFGFILE_URL) as response, \
              open("pimydoc", 'wb') as out_file:
             shutil.copyfileobj(response, out_file)
+
+        logging.info("Successfully downloaded the 'pimydoc' file.")
+
     except urllib.error.URLError as exception:
         logging.error("An error occured : can't download the file.")
         logging.error("Error returned by Python : "+str(exception))
