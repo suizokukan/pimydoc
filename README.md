@@ -35,7 +35,6 @@ The source file becomes :
         # ressource::002
         # ¤ another interesting ressource.
         print("...")
-
     
 #(2) purpose and file format
 
