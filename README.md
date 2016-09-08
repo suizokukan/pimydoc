@@ -242,6 +242,9 @@ default profile
     ... searches a "pimydoc" file in the current directory, reads it and parses
         the current directory, searching files to be modified.
 
+    $ pimydoc --downloadpimydoc
+    ... downloads the default documentation source file (named 'pimydoc') and exits.
+    
     $ pimydoc --sourcepath path/to/the/targetpath --docsrcfile name_of_the_docsrc_file
     ... gives to the script the name of the source path (=to be modified) and
         the name of the documentation source file (e.g. "pimydoc")
@@ -284,34 +287,47 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 
 	usage: pimydoc.py [-h] [--sourcepath SOURCEPATH] [--docsrcfile DOCSRCFILE]
 	                  [--verbose {0,1,2}] [-vv] [-vvv] [--version] [--remove]
-	                  [--securitymode]
-
-	Pimydoc project, v.0.1.2
+	                  [--securitymode] [--downloadpimydoc]
 
 	optional arguments:
-	  -h, --help            show this help message and exit
-	  --sourcepath SOURCEPATH
-	                        source path of the code (default:
-	                        /Users/admin/pimydoc)
-	  --docsrcfile DOCSRCFILE
-	                        source documentation file name (default:
-	                        /Users/admin/pimydoc/pimydoc)
-	  --verbose {0,1,2}     degree of verbosity of the output. 0 : only the error
-	                        messages; 1 : all messages except debug messages; 2 :
-	                        all messages, including debug messages; See also the
-	                        -vv and -vvv options. (default: 1)
-	  -vv                   verbosity set to 1 (all messages except debug
-	                        messages). (default: False)
-	  -vvv                  verbosity set to 2 (all messages, including debug
-	                        messages). (default: False)
-	  --version, -v         show the version and exit
-	  --remove, -r          Remove every pimydoc line in all the files of the
-	                        source directory (default: False)
-	  --securitymode, -s    Security mode : backup files created by Pimydoc are not
-	                        deleted (default: False)
+      -h, --help            show this help message and exit
+      --sourcepath SOURCEPATH
+                            source path of the code (default:
+                            /home/suizokukan/projets/pimydoc/pimydoc)
+      --docsrcfile DOCSRCFILE
+                            source documentation file name (default:
+                            /home/suizokukan/projets/pimydoc/pimydoc/pimydoc)
+      --verbose {0,1,2}     degree of verbosity of the output. 0 : only the error
+                            messages; 1 : all messages except debug messages; 2 :
+                            all messages, including debug messages; See also the
+                            -vv and -vvv options. (default: 1)
+      -vv                   verbosity set to 1 (all messages except debug
+                            messages). (default: False)
+      -vvv                  verbosity set to 2 (all messages, including debug
+                            messages). (default: False)
+      --version, -v         show the version and exit
+      --remove, -r          Remove every pimydoc line in all the files of the
+                            source directory (default: False)
+      --securitymode, -s    Security mode : backup files created by Pimdoc are not
+                            deleted (default: False)
+      --downloadpimydoc     download a default pimydoc file in the current
+                            directory and exit (default: False)
 	
 #(7) history / future versions
- 
+
+##v 0.1.9(beta) (2016_09_08) : fixed issue #002, --downloadpimydoc option
+
+    • rewrite_new_targetfile : a new exception is caught (UnicodeDecodeError)
+      when reading a binary file
+    • --downloadpimydoc option : the function download_default_pimydoc()
+      downloads from the default "pimydoc" file.
+    
+    • updated the documentation
+
+    • unittests : 2 tests (passed) 
+    • raw Pylint invocation : 10.0/10.0 for all scripts.
+    • version packaged and sent to Pypi (https://pypi.python.org/pypi/Pimydoc)
+    
 ##v 0.1.8(beta) (2016_09_07) : fixed issue #001
 
     • rewrite_new_targetfile() : fixed the way a linefeed is added to a docline

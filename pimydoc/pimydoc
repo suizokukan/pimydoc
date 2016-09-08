@@ -12,7 +12,6 @@ REGEX_SOURCE_FILTER : .+py$
 REGEX_FIND_DOCTITLE : ^\[(?P<doctitle>.+)\]$
 
 ### "|_|_" isn't the same as "|_|" (spaces are replaced by _)
-STARTSYMB_IN_DOC :| | 
 
 ### 0 if the tabulations are not replaced by spaces in doclines.
 PROFILE_PYTHON_SPACENBR_FOR_A_TAB : 4

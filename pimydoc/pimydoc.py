@@ -46,6 +46,11 @@ import platform
 import re
 import shutil
 import sys
+import urllib.request
+
+# location of the default documentation source file :
+DEFAULTCFGFILE_URL = "https://raw.githubusercontent.com/suizokukan/pimydoc/" \
+                     "master/pimydoc/pimydoc"
 
 #///////////////////////////////////////////////////////////////////////////////
 def remove_and_return_linefeed(src):
@@ -331,6 +336,10 @@ class CommandLineParser(argparse.ArgumentParser):
                           action='store_true',
                           help="Security mode : backup files created by Pimdoc are not deleted")
 
+        self.add_argument('--downloadpimydoc',
+                          action='store_true',
+                          help="download a default pimydoc file in the current directory and exit")
+
     #///////////////////////////////////////////////////////////////////////////
     def get_args(self):
         """
@@ -346,6 +355,30 @@ class CommandLineParser(argparse.ArgumentParser):
                 RETURNED VALUE    : the argparse.Namespace object
         """
         return self.parse_args()
+
+#///////////////////////////////////////////////////////////////////////////////
+def download_default_pimydoc():
+    """
+        download_default_pimydoc()
+        ________________________________________________________________________
+
+        Try to generate a default pimydoc file in the current directory.
+        ________________________________________________________________________
+
+        no PARAMETER, no RETURNED VALUE
+    """
+    if os.path.exists("pimydoc"):
+        logging.error("Can't generate a default documentation source file : "
+                      "the file 'pimydoc' already exists.")
+        return
+
+    try:
+        with urllib.request.urlopen(DEFAULTCFGFILE_URL) as response, \
+             open("pimydoc", 'wb') as out_file:
+            shutil.copyfileobj(response, out_file)
+    except urllib.error.URLError as exception:
+        logging.error("An error occured : can't download the file.")
+        logging.error("Error returned by Python : "+str(exception))
 
 ################################################################################
 class DocumentationSource(dict):
@@ -624,11 +657,16 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
     # -------------------------------------------
     # let's read the content of the target file :
     try:
-        with open(targetfile_name, 'r', encoding="utf-8") as target_file:
+        with open(targetfile_name, 'rt', encoding="utf-8") as target_file:
             targetcontent = target_file.readlines()
     except FileNotFoundError as error:
         logging.error("! Can't read the content of the file '%s'", targetfile_name)
-        logging.error("! Error returned by Python : "+str(error))
+        logging.error("! Error returned by Python : (FileNotFoundError) "+str(error))
+        logging.error("! Skipping this file.")
+        return
+    except UnicodeDecodeError as error:
+        logging.error("! Can't read the content of the file '%s'", targetfile_name)
+        logging.error("! Error returned by Python : (UnicodeDecodeError) "+str(error))
         logging.error("! Skipping this file.")
         return
 
@@ -750,6 +788,10 @@ def main():
     if args.securitymode:
         logging.info("Security mode activated : " \
                      "the backup files created by the program will not be deleted.")
+
+    if args.downloadpimydoc:
+        download_default_pimydoc()
+        sys.exit(0)
 
     if not os.path.exists(args.docsrcfile):
         logging.error("! The expected documentation source file '%s' doesn't exist.",
