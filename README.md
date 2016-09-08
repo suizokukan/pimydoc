@@ -315,6 +315,15 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 	
 #(7) history / future versions
 
+##v 0.2.3(beta) (2016_09_08) : fixed the default value of REGEX_FIND_DOCTITLE
+
+    • Settings.__init__() : fixed the default value of REGEX_FIND_DOCTITLE
+      to "^\\[(?P<doctitle>.+)\\]$"
+
+    • unittests : 2 tests (passed) 
+    • raw Pylint invocation : 10.0/10.0 for all scripts.
+    • version packaged and sent to Pypi (https://pypi.python.org/pypi/Pimydoc)
+    
 ##v 0.2.2(beta) (2016_09_08) : fixed a bug in DocumentationSource.newline()
 
     • DocumentationSource.newline() handles correctly the case where a doctitle

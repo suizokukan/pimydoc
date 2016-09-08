@@ -113,7 +113,7 @@ PROJECT_NAME = "Pimydoc"
 
 # see https://www.python.org/dev/peps/pep-0440/
 # e.g. 0.1.2.dev1, 0.0.6a0
-PROJECT_VERSION = "0.2.2"
+PROJECT_VERSION = "0.2.3"
 
 # constants required by Pypi.
 __projectname__ = PROJECT_NAME
@@ -181,7 +181,7 @@ class Settings(dict):
         # this is a direct initialization : see the .init_from_line() method to
         # see how self can be initialized from a file.
         self["REGEX_SOURCE_FILTER"] = ""
-        self["REGEX_FIND_DOCTITLE"] = "^\\[(?P<name>.+)\\]$"
+        self["REGEX_FIND_DOCTITLE"] = "^\\[(?P<doctitle>.+)\\]$"
         self["STARTSYMB_IN_DOC"] = "| " + "|" + " " # a fancy way to write STARTSYMB_IN_DOC but it
                                                     # avoids, if Pimydoc is applied to this file,
                                                     # to remove this line since this line contains
