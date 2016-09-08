@@ -626,7 +626,7 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
                     _, last_linefeed = remove_and_return_linefeed(line)
 
                     if just_remove_pimydoc_lines is False:
-                        logging.info("+ adding some doc in '%s'; doctitle='%s'",
+                        logging.info("+ doc to added/updated in '%s'; doctitle='%s'",
                                      targetfile_name, doc_title)
 
                         # what is the "startstring", i.e. the string in <line>

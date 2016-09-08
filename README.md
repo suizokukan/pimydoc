@@ -319,6 +319,7 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 
     • added an info message at the end of the download_default_pimydoc() function.
     • improved the final message of the pimydoc() function.
+    • improved a message in the rewrite_new_targetfile() function.
 
     • unittests : 2 tests (passed) 
     • raw Pylint invocation : 10.0/10.0 for all scripts.
