@@ -315,6 +315,14 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 	
 #(7) history / future versions
 
+##v 0.2.1(beta) (2016_09_08) : fixed an error in pimydoc
+
+    • added the accidently deleted "STARTSYMB_IN_DOC :| |" in pimydoc
+
+    • unittests : 2 tests (passed) 
+    • raw Pylint invocation : 10.0/10.0 for all scripts.
+    • version packaged and sent to Pypi (https://pypi.python.org/pypi/Pimydoc)
+
 ##v 0.2(beta) (2016_09_08) : messages display improvement
 
     • added an info message at the end of the download_default_pimydoc() function.
