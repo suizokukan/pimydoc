@@ -315,6 +315,15 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 	
 #(7) history / future versions
 
+##v 0.2.4(beta) (2016_09_08) : fixed a minor bug in DocumentationSource.__init__()
+
+    • DocumentationSource.__init__() : if the documentation source file is
+      a directory, an error is raised to prevent the directory to be opened.
+
+    • unittests : 2 tests (passed) 
+    • raw Pylint invocation : 10.0/10.0 for all scripts.
+    • version packaged and sent to Pypi (https://pypi.python.org/pypi/Pimydoc)
+    
 ##v 0.2.3(beta) (2016_09_08) : fixed the default value of REGEX_FIND_DOCTITLE
 
     • Settings.__init__() : fixed the default value of REGEX_FIND_DOCTITLE
@@ -422,7 +431,7 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
       this feature.
 
     • simplified the documentation source file : no more "REGEX_FIND_PIMYDOC*"
-      keys. 
+      keys.
     • improved the documentation
 
     • unittests : 1 test (passed) 

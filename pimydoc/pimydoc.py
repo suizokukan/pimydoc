@@ -113,7 +113,7 @@ PROJECT_NAME = "Pimydoc"
 
 # see https://www.python.org/dev/peps/pep-0440/
 # e.g. 0.1.2.dev1, 0.0.6a0
-PROJECT_VERSION = "0.2.3"
+PROJECT_VERSION = "0.2.4"
 
 # constants required by Pypi.
 __projectname__ = PROJECT_NAME
@@ -424,6 +424,11 @@ class DocumentationSource(dict):
 
         if not os.path.exists(filename):
             logging.error("! Missing documentation source file '%s'", filename)
+            self.errors.append("Can't open '{0}'".format(filename))
+            return
+
+        if os.path.isdir(filename):
+            logging.error("! '%s' is not a file but a directory.", filename)
             self.errors.append("Can't open '{0}'".format(filename))
             return
 
