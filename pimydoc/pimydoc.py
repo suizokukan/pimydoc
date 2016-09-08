@@ -113,7 +113,7 @@ PROJECT_NAME = "Pimydoc"
 
 # see https://www.python.org/dev/peps/pep-0440/
 # e.g. 0.1.2.dev1, 0.0.6a0
-PROJECT_VERSION = "0.2.1"
+PROJECT_VERSION = "0.2.2"
 
 # constants required by Pypi.
 __projectname__ = PROJECT_NAME
@@ -488,7 +488,7 @@ class DocumentationSource(dict):
                     logging.error("! An error occured : " \
                                   "stop reading the documentation source file.")
                     self.errors.append("Can't read the " \
-                                       "line '{0}' (#{1})".format(line, linenumber))
+                                       "line '{0}' (line #{1})".format(line, linenumber))
                     stop = True
             elif len(line.strip()) > 0:
                 logging.error("! (reading the documentation source file) " \
@@ -505,22 +505,23 @@ class DocumentationSource(dict):
                 except IndexError as error:
                     logging.error("! An error occured : " \
                                   "stop reading the documentation source file.")
-                    self.errors.append("Can't read the line '{0}' (#{1}) : " \
+                    self.errors.append("Can't read the line '{0}' (line #{1}) : " \
                                        "ill-formed doctitle".format(line, linenumber))
                     self.errors.append("Error returned by Python :"+str(error))
                     stop = True
 
-                if new_title in self:
+                if stop is False and new_title in self:
                     logging.error("! doctitle '%s' already defined !", new_title)
                     self.errors.append("Doctitle '{0}' already present " \
                                        "in the documentation source file." \
-                                       "See line '{1}' (#{2})".format(new_title,
-                                                                      line, linenumber))
+                                       "See line '{1}' (line #{2})".format(new_title,
+                                                                           line, linenumber))
 
-                self[new_title] = []
-                current_title = new_title
+                if stop is False:
+                    self[new_title] = []
+                    current_title = new_title
 
-                logging.debug("found a new title : '%s' (#%s)", new_title, linenumber)
+                    logging.debug("found a new title : '%s' (#%s)", new_title, linenumber)
 
         return location, current_title, stop
 

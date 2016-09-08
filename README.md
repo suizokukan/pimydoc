@@ -315,6 +315,16 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 	
 #(7) history / future versions
 
+##v 0.2.2(beta) (2016_09_08) : fixed a bug in DocumentationSource.newline()
+
+    • DocumentationSource.newline() handles correctly the case where a doctitle
+      is ill-formed.
+    • improved messages : the line number is now marked by the word "line".    
+
+    • unittests : 2 tests (passed) 
+    • raw Pylint invocation : 10.0/10.0 for all scripts.
+    • version packaged and sent to Pypi (https://pypi.python.org/pypi/Pimydoc)
+   
 ##v 0.2.1(beta) (2016_09_08) : fixed an error in pimydoc
 
     • added the accidently deleted "STARTSYMB_IN_DOC :| |" in pimydoc
