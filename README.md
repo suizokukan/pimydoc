@@ -315,6 +315,14 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 	
 #(7) history / future versions
 
+##v 0.2.5(beta) (2016_09_11) added two debug messages
+
+    • added two debug messages in rewrite_new_targetfile().
+
+    • unittests : 2 tests (passed) 
+    • raw Pylint invocation : 10.0/10.0 for all scripts.
+    • version packaged and sent to Pypi (https://pypi.python.org/pypi/Pimydoc)
+        
 ##v 0.2.4(beta) (2016_09_08) : fixed a minor bug in DocumentationSource.__init__()
 
     • DocumentationSource.__init__() : if the documentation source file is

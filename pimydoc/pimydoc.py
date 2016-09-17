@@ -113,7 +113,7 @@ PROJECT_NAME = "Pimydoc"
 
 # see https://www.python.org/dev/peps/pep-0440/
 # e.g. 0.1.2.dev1, 0.0.6a0
-PROJECT_VERSION = "0.2.4"
+PROJECT_VERSION = "0.2.5"
 
 # constants required by Pypi.
 __projectname__ = PROJECT_NAME
@@ -616,7 +616,6 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
 
         with open(targetfile_name, "wb") as newtargetfile:
             for linenumber, line in enumerate(targetcontent):
-
                 # let's add a "normal" line, i.e. everything but a Pimydoc-docline.
                 if SETTINGS["STARTSYMB_IN_DOC"] not in line and \
                    SETTINGS["STARTSYMB_IN_DOC"].rstrip() not in line:
@@ -628,6 +627,7 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
                     # let's add the expected documentation :
                     doc_content = docsrc[lines_with_trigger[linenumber]]
                     doc_title = lines_with_trigger[linenumber]
+                    logging.debug("doc_title = '%s'", doc_title)
 
                     _, last_linefeed = remove_and_return_linefeed(line)
 
@@ -643,8 +643,10 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
                                   line.replace("\t",
                                                " "*SETTINGS["PROFILE_PYTHON_SPACENBR_FOR_A_TAB"])
                             startstring = _line[:_line.find(doc_title)]
+                            logging.debug("startstring (Python profile) = '%s'", startstring)
                         else:
                             startstring = line[:line.find(doc_title)]
+                            logging.debug("startstring = '%s'", startstring)
 
                         for docline in doc_content:
                             new_docline = startstring+SETTINGS["STARTSYMB_IN_DOC"]+docline
