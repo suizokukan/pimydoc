@@ -113,7 +113,7 @@ PROJECT_NAME = "Pimydoc"
 
 # see https://www.python.org/dev/peps/pep-0440/
 # e.g. 0.1.2.dev1, 0.0.6a0
-PROJECT_VERSION = "0.2.5"
+PROJECT_VERSION = "0.2.5.1"
 
 # constants required by Pypi.
 __projectname__ = PROJECT_NAME
@@ -123,7 +123,7 @@ __license__ = "GPL-3.0"
 __licensepypi__ = 'License :: OSI Approved :: GNU General Public License v3 (GPLv3)'
 __version__ = PROJECT_VERSION
 __maintainer__ = "Xavier Faure (suizokukan)"
-__email__ = "suizokukan @T orange D@T fr"
+__email__ = "suizokukan@orange.fr"
 __status__ = "Beta"
 __statuspypi__ = 'Development Status :: 4 - Beta'
 

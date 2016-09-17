@@ -123,7 +123,7 @@ then
     exit 1
 fi
 
-sudo pip3 install pimydoc
+sudo pip3 install pimydoc --no-cache-dir
 
 #-------------------------------------------------------------------------------
 echo
