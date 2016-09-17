@@ -321,7 +321,7 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 	
 #(7) history / future versions
 
-##v 0.2.5(beta) (2016_09_XX) added two debug messages
+##v 0.2.5(beta) (2016_09_17) COMMENT_STARTSTRING in the documentation source file
 
     • comment startstring can now be defined in the documentation
       source file (see COMMENT_STARTSTRING in the documentation).

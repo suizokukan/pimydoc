@@ -192,7 +192,7 @@ class Settings(dict):
         self["PROFILE_PYTHON_SPACENBR_FOR_A_TAB"] = 4
         self["REMOVE_FINAL_SPACES_IN_NEW_DOCLINES"] = "True"
         self["COMMENT_STARTSTRING"] = "###"
-        
+
     #///////////////////////////////////////////////////////////////////////////
     def init_from_line(self, line):
         """
@@ -242,7 +242,7 @@ class Settings(dict):
                 elif key == "COMMENT_STARTSTRING":
                     self[key] = value.strip()
                     logging.debug("key '%s' set to '%s' (%s).", key, self[key], type(self[key]))
-                    
+
                 else:
                     logging.error("! unknown setting key : '%s' (set to '%s')", key, self[key])
 
@@ -560,6 +560,7 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
         no RETURNED VALUE
     """
 
+    #...........................................................................
     def rewrite_new_targetfile__line(newtargetfile, new_docline, last_linefeed):
         """
             rewrite_new_targetfile__line()
@@ -594,12 +595,46 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
                 logging.debug("special case : " \
                               "a linefeed has been added to '%s'",
                               new_docline)
+
             new_docline = new_docline.rstrip()
             new_docline += new_doclinefeed
         logging.debug("+ (%s characters) '%s'",
                       len(new_docline), new_docline.replace(" ", "_"))
         newtargetfile.write(new_docline.encode(encoding="utf-8"))
 
+    #...........................................................................
+    def get_startstring(profile, line, doc_title):
+        """
+            get_startstring()
+
+            this function is a subfunction of the pimydoc_a_file() function.
+            ________________________________________________________________________
+
+            Compute the startstring present at the very beginning of <line>
+            before the <doc_title>.
+            ________________________________________________________________________
+
+            ARGUMENTS:
+
+            • profile                   : (str) "Python", "C++", ...
+            • line                      : (str) the line where lies the startstring
+            • doc_title                 : (str) a substring of <line>
+
+            RETURNED VALUE              : (str) the startstring
+        """
+        if profile == "Python":
+            if SETTINGS["PROFILE_PYTHON_SPACENBR_FOR_A_TAB"] > 0:
+                _line = \
+                  line.replace("\t",
+                               " "*SETTINGS["PROFILE_PYTHON_SPACENBR_FOR_A_TAB"])
+            startstring = _line[:_line.find(doc_title)]
+            logging.debug("startstring (Python profile) = '%s'", startstring)
+        else:
+            startstring = line[:line.find(doc_title)]
+            logging.debug("startstring = '%s'", startstring)
+        return startstring
+
+    #...........................................................................
     def rewrite_new_targetfile(targetfile_name, just_remove_pimydoc_lines):
         """
             rewrite_new_targetfile()
@@ -644,16 +679,7 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
 
                         # what is the "startstring", i.e. the string in <line>
                         # before the doc title ?
-                        if profile == "Python":
-                            if SETTINGS["PROFILE_PYTHON_SPACENBR_FOR_A_TAB"] > 0:
-                                _line = \
-                                  line.replace("\t",
-                                               " "*SETTINGS["PROFILE_PYTHON_SPACENBR_FOR_A_TAB"])
-                            startstring = _line[:_line.find(doc_title)]
-                            logging.debug("startstring (Python profile) = '%s'", startstring)
-                        else:
-                            startstring = line[:line.find(doc_title)]
-                            logging.debug("startstring = '%s'", startstring)
+                        startstring = get_startstring(profile, line, doc_title)
 
                         for docline in doc_content:
                             new_docline = startstring+SETTINGS["STARTSYMB_IN_DOC"]+docline
