@@ -135,7 +135,9 @@ class Tests(unittest.TestCase):
         test4 : a Python file with a doc paragraph (in a docstring) to be updated
         test5 : a Python file with two doc paragraphs (in a docstring) to be updated
         test6 : one Python file to be modified (with a commentary beginning by #)
-        test7 : two Python file to be modified (docstring + commentary beginning by #)
+        test7 : two Python file to be modified (docstring + commentary beginning by ###)
+        test8 : one C++ file to be modified (docstring + commentary beginning by #)
+        test9 : one C++ file to be modified (docstring + commentary beginning by #~#)
     """
 
     #///////////////////////////////////////////////////////////////////////////
@@ -154,8 +156,8 @@ class Tests(unittest.TestCase):
             shutil.rmtree(PATH_TO_CURRENT_TEST)
 
         # If you want to choose the test to be runned:
-        #for test_number in [8,]:
-        for test_number in range(8+1):
+        for test_number in [9,]:
+        #for test_number in range(9+1):
 
             test_path = os.path.join(os.getcwd(), "tests", "test"+str(test_number))
             print("(test_pimydoc_function()) Testing "+test_path)
@@ -181,6 +183,7 @@ class Tests(unittest.TestCase):
                                              6:"d72da8d969b03abd18c192e1a7ae3466",
                                              7:"2ef2d151196e1cead4c584002ce59cdf",
                                              8:"fb80d1ded9adc9a5b7d31f33ae0259d3",
+                                             9:"878c6112d60bf87efce4481612df7d7a",
                                             }[test_number])
 
     #///////////////////////////////////////////////////////////////////////////

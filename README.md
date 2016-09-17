@@ -73,8 +73,10 @@ The added linefeed is either the last linefeed detected by reading the file,
 either "\r\n" for Windows systems either "\n" in the other cases.
 
 ###(2.1.2) comments
-Comments are lines beginning with the "###" string. Comments added at the end of
-a line like "some stuff ### mycomment" are not allowed.
+By default, comments are the lines beginning with the "###" string. Comments
+added at the end of a line like "some stuff ### mycomment" are not allowed.
+You can change the comment startstring : see the COMMENT_STARTSTRING
+in the documentation source file.
 
 ###(2.1.3) header
 
@@ -163,7 +165,11 @@ Examples :
 REMOVE_FINAL_SPACES_IN_NEW_DOCLINES : True
 
 REMOVE_FINAL_SPACES_IN_NEW_DOCLINES : False
-        
+
+#### • COMMENT_STARTSTRING : #~#
+In the documentation source file, characters at the beginning of a line
+which is read as a comment and skipped. The default value is "###".
+            
 ##(2.2) how to add doctitles in the files stored in the source directory
 You juste have to add on a line the name of a doctitle (do **not follow the
 format described in REGEX_FIND_DOCTITLE, e.g. "[ressource::001]"**, this
@@ -315,8 +321,10 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 	
 #(7) history / future versions
 
-##v 0.2.5(beta) (2016_09_11) added two debug messages
+##v 0.2.5(beta) (2016_09_XX) added two debug messages
 
+    • comment startstring can now be defined in the documentation
+      source file (see COMMENT_STARTSTRING in the documentation).
     • added two debug messages in rewrite_new_targetfile().
 
     • unittests : 2 tests (passed) 

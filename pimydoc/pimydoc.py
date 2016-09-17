@@ -153,6 +153,8 @@ class Settings(dict):
 
         • REMOVE_FINAL_SPACES_IN_NEW_DOCLINES : (str) "True" or "False"
 
+        • COMMENT_STARTSTRING : (str) e.g. "###"
+
         about the docsrc (documentation source file) format : see README.md
         ________________________________________________________________________
 
@@ -189,7 +191,8 @@ class Settings(dict):
                                                     # documentation source file.
         self["PROFILE_PYTHON_SPACENBR_FOR_A_TAB"] = 4
         self["REMOVE_FINAL_SPACES_IN_NEW_DOCLINES"] = "True"
-
+        self["COMMENT_STARTSTRING"] = "###"
+        
     #///////////////////////////////////////////////////////////////////////////
     def init_from_line(self, line):
         """
@@ -236,6 +239,10 @@ class Settings(dict):
                     self[key] = value.strip()
                     logging.debug("key '%s' set to '%s' (%s).", key, self[key], type(self[key]))
 
+                elif key == "COMMENT_STARTSTRING":
+                    self[key] = value.strip()
+                    logging.debug("key '%s' set to '%s' (%s).", key, self[key], type(self[key]))
+                    
                 else:
                     logging.error("! unknown setting key : '%s' (set to '%s')", key, self[key])
 
@@ -445,7 +452,7 @@ class DocumentationSource(dict):
             stop = False
             for linenumber, line in enumerate(src.readlines()):
 
-                if line.startswith("###"):
+                if line.startswith(SETTINGS["COMMENT_STARTSTRING"]):
                     logging.debug("Skipped commentary line '%s'", line.strip())
                 elif line.strip() == "[pimydoc]":
                     location = "settings"
