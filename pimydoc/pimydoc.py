@@ -113,7 +113,7 @@ PROJECT_NAME = "Pimydoc"
 
 # see https://www.python.org/dev/peps/pep-0440/
 # e.g. 0.1.2.dev1, 0.0.6a0
-PROJECT_VERSION = "0.2.5.1"
+PROJECT_VERSION = "0.2.6"
 
 # constants required by Pypi.
 __projectname__ = PROJECT_NAME
@@ -131,6 +131,8 @@ __statuspypi__ = 'Development Status :: 4 - Beta'
 class Settings(dict):
     """
         Settings class
+
+        The settings are stored in the documentation source file.
         ________________________________________________________________________
 
         Use this class to store the settings used by the pimydoc_a_file()
