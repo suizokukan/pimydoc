@@ -255,6 +255,14 @@ default profile
     ... gives to the script the name of the source path (=to be modified) and
         the name of the documentation source file (e.g. "pimydoc")
 
+## trick : how to modify the start string in a source directory ?
+
+three steps :
+
+    $ pimydoc --remove     (or -r)
+    (modify the documentation source file : modify the STARTSYMB_IN_DOC key)
+    $ pimydoc
+    
 ## advanced options
 
 ### removing the documentation added by Pimydoc
