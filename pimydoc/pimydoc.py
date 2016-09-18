@@ -60,9 +60,9 @@ def remove_and_return_linefeed(src):
 
         Remove the linefeed characters from the end of (str)src.
         This function recognizes three kinds of linefeed characters :
-        • the Linux one (\n)
-        • the Windows one (\r\n)
-        • the ancient OSX one (\r)
+        ▪ the Linux one (\n)
+        ▪ the Windows one (\r\n)
+        ▪ the ancient OSX one (\r)
         ________________________________________________________________________
 
         PARAMETER : (str)src, the source string to be cut
@@ -103,17 +103,17 @@ def normpath(_path):
 #===============================================================================
 # project's settings
 #
-# • for __version__ format string, see https://www.python.org/dev/peps/pep-0440/ :
+# ▪ for __version__ format string, see https://www.python.org/dev/peps/pep-0440/ :
 #   e.g. "0.1.2.dev1" or "0.1a"
 #
-# • See also https://pypi.python.org/pypi?%3Aaction=list_classifiers
+# ▪ See also https://pypi.python.org/pypi?%3Aaction=list_classifiers
 #
 #===============================================================================
 PROJECT_NAME = "Pimydoc"
 
 # see https://www.python.org/dev/peps/pep-0440/
 # e.g. 0.1.2.dev1, 0.0.6a0
-PROJECT_VERSION = "0.2.6"
+PROJECT_VERSION = "0.2.6.1"
 
 # constants required by Pypi.
 __projectname__ = PROJECT_NAME
@@ -139,23 +139,23 @@ class Settings(dict):
         function.
         The settings are stored as in a dictionary : (str)key->(str)value
 
-        • REGEX_SOURCE_FILTER : regex describing the name of the files to be
+        ▪ REGEX_SOURCE_FILTER : regex describing the name of the files to be
                                 modified.
 
-        • REGEX_FIND_DOCTITLE : regex describing the name (in the documentation
+        ▪ REGEX_FIND_DOCTITLE : regex describing the name (in the documentation
                                 source file) of the titles.
                                 See below for more details (docsrc format)
 
-        • STARTSYMB_IN_DOC    : string at the beginning of each line of
+        ▪ STARTSYMB_IN_DOC    : string at the beginning of each line of
                                 documentation added in the source files.
                                 See below for more details (docsrc format)
 
-        • PROFILE_PYTHON_SPACENBR_FOR_A_TAB : (int) for Python files, number of
+        ▪ PROFILE_PYTHON_SPACENBR_FOR_A_TAB : (int) for Python files, number of
                                               spaces replacing a tab character.
 
-        • REMOVE_FINAL_SPACES_IN_NEW_DOCLINES : (str) "True" or "False"
+        ▪ REMOVE_FINAL_SPACES_IN_NEW_DOCLINES : (str) "True" or "False"
 
-        • COMMENT_STARTSTRING : (str) e.g. "###"
+        ▪ COMMENT_STARTSTRING : (str) e.g. "###"
 
         about the docsrc (documentation source file) format : see README.md
         ________________________________________________________________________
@@ -165,8 +165,8 @@ class Settings(dict):
         instance attribute(s) : -
 
         class methods :
-            • __init__(self)
-            • init_from_line(self, line)
+            ▪ __init__(self)
+            ▪ init_from_line(self, line)
     """
 
     #///////////////////////////////////////////////////////////////////////////
@@ -272,15 +272,15 @@ class CommandLineParser(argparse.ArgumentParser):
 
         class attributes :
 
-            • (str)description
-            • (str)epilog
+            ▪ (str)description
+            ▪ (str)epilog
 
         instance attribute(s) : -
 
         class methods :
 
-            • __init__()
-            • get_args()
+            ▪ __init__()
+            ▪ get_args()
     """
     description = "{0} project, v.{1}".format(PROJECT_NAME,
                                               PROJECT_VERSION)
@@ -409,11 +409,11 @@ class DocumentationSource(dict):
         class attributes : -
 
         instance attribute(s) : -
-            • self.errors : a list of strings, filled by the newline() method.
+            ▪ self.errors : a list of strings, filled by the newline() method.
 
         class methods :
-            • __init__(self, filename)
-            • newline(self, line, linenumber, location, current_title)
+            ▪ __init__(self, filename)
+            ▪ newline(self, line, linenumber, location, current_title)
     """
 
     #///////////////////////////////////////////////////////////////////////////
@@ -483,10 +483,10 @@ class DocumentationSource(dict):
             ________________________________________________________________
 
             ARGUMENTS :
-            • line          : (str) line to be added
-            • linenumber    : (int) line number in the source file
-            • location      : (str) see __init__() : None, "doc", ...
-            • current_title : (str) the current doc title.
+            ▪ line          : (str) line to be added
+            ▪ linenumber    : (int) line number in the source file
+            ▪ location      : (str) see __init__() : None, "doc", ...
+            ▪ current_title : (str) the current doc title.
 
             RETURNED VALUE : ((str)location, (str)current_title, (bool)stop)
         """
@@ -545,7 +545,11 @@ class DocumentationSource(dict):
         return location, current_title, stop
 
 #///////////////////////////////////////////////////////////////////////////////
-def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitymode):
+def pimydoc_a_file(targetfile_name,
+                   docsrc,
+                   just_remove_pimydoc_lines,
+                   securitymode,
+                   read_doctitles):
     """
         pimydoc_a_file()
         ________________________________________________________________________
@@ -554,21 +558,22 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
 
         Read a target file, removed the old documentation and replace it by the
         new one described in <docsrc>.
+
+        Update read_doctitles
         ________________________________________________________________________
 
         ARGUMENTS :
-        • targetfile_name           : (str) name of the file to be modified
-        • docsrc                    : (DocumentationSource) doc content
-        • just_remove_pimydoc_lines : (bool) if True, nothing is added but the
+        ▪ targetfile_name           : (str) name of the file to be modified
+        ▪ docsrc                    : (DocumentationSource) doc content
+        ▪ just_remove_pimydoc_lines : (bool) if True, nothing is added but the
                                       pimydoc lines of documentation are removed.
-        • securitymode              : (bool) True if the backup files created
+        ▪ securitymode              : (bool) True if the backup files created
                                       by this function have to be kept.
+        ▪ read_doctitles            : a dict (str)doctitle->(bool)has the doctitle
+                                      been read until now ?
 
-        no RETURNED VALUE
+        RETURNED VALUE : read_doctitles
     """
-
-    # dict : (str)doctitle->(bool)has the doctile been read ?
-    read_doctitles = dict(zip(docsrc.keys(), [False,]*len(docsrc)))
 
     #...........................................................................
     def rewrite_new_targetfile__line(newtargetfile, new_docline, last_linefeed):
@@ -584,9 +589,9 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
             ________________________________________________________________________
 
             ARGUMENTS :
-            • newtargetfile             : a file descriptor.
-            • new_docline               : the line to be added
-            • last_linefeed             : the character(s) at the end of the precedent
+            ▪ newtargetfile             : a file descriptor.
+            ▪ new_docline               : the line to be added
+            ▪ last_linefeed             : the character(s) at the end of the precedent
                                           lines added before
 
             no RETURNED VALUE
@@ -613,6 +618,37 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
         newtargetfile.write(new_docline.encode(encoding="utf-8"))
 
     #...........................................................................
+    def get_lines_with_trigger(targetcontent, docsrc):
+        """
+            get_lines_with_trigger()
+
+            this function is a subfunction of the pimydoc_a_file() function.
+            ________________________________________________________________________
+
+            Return an object required by pimydoc_a_file() : <lines_with_trigger>
+
+            (dict) (int)line number -> (str)name of the doc title to be added after
+                                       the line
+            ________________________________________________________________________
+
+            ARGUMENTS:
+            ▪ targetcontent             : the content of the target file, i.e.
+                                          what is returned by
+                                          target_file.readlines().
+            ▪ docsrc                    : (DocumentationSource object) doc content
+
+            RETURNED VALUE              : (str) the expected dictionary
+        """
+        res = dict()
+
+        for linenumber, line in enumerate(targetcontent):
+            for doctitle in docsrc:
+                if doctitle in line:
+                    res[linenumber] = doctitle
+                    read_doctitles[doctitle] = True
+        return res
+
+    #...........................................................................
     def get_startstring(profile, line, doc_title):
         """
             get_startstring()
@@ -626,9 +662,9 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
 
             ARGUMENTS:
 
-            • profile                   : (str) "Python", "C++", ...
-            • line                      : (str) the line where lies the startstring
-            • doc_title                 : (str) a substring of <line>
+            ▪ profile                   : (str) "Python", "C++", ...
+            ▪ line                      : (str) the line where lies the startstring
+            ▪ doc_title                 : (str) a substring of <line>
 
             RETURNED VALUE              : (str) the startstring
         """
@@ -656,8 +692,8 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
             ________________________________________________________________________
 
             ARGUMENTS :
-            • targetfile_name           : (str) name of the file to be modified
-            • just_remove_pimydoc_lines : (bool) if True, nothing is added but the
+            ▪ targetfile_name           : (str) name of the file to be modified
+            ▪ just_remove_pimydoc_lines : (bool) if True, nothing is added but the
                                           pimydoc lines of documentation are removed.
 
             no RETURNED VALUE
@@ -717,24 +753,17 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
         logging.error("! Can't read the content of the file '%s'", targetfile_name)
         logging.error("! Error returned by Python : (FileNotFoundError) "+str(error))
         logging.error("! Skipping this file.")
-        return
+        return read_doctitles
     except UnicodeDecodeError as error:
         logging.error("! Can't read the content of the file '%s'", targetfile_name)
         logging.error("! Error returned by Python : (UnicodeDecodeError) "+str(error))
         logging.error("! Skipping this file.")
-        return
+        return read_doctitles
 
     # ---------------------------
     # fill <lines_with_trigger> :
-
     # (int)line number : (str)name of the doc title to be added after the line
-    lines_with_trigger = dict()
-
-    for linenumber, line in enumerate(targetcontent):
-        for doctitle in docsrc:
-            if doctitle in line:
-                lines_with_trigger[linenumber] = doctitle
-                read_doctitles[doctitle] = True
+    lines_with_trigger = get_lines_with_trigger(targetcontent, docsrc)
 
     # -------------
     # backup file :
@@ -757,16 +786,9 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
     if securitymode is False:
         os.remove(targetfile_name+"_pimydoc_backup")
 
-    # ----------------------------------------------------------
-    # are they doctitle defined in the documentation source file
-    # not read in the source target ?
-    for doctitle in read_doctitles:
-        if read_doctitles[doctitle] is False:
-            logging.info("beware : the doctitle '%s' is defined " \
-                         "in the documentation source " \
-                         "file but never appears in the source directory.", doctitle)
-
     logging.debug("--- done with %s", targetfile_name)
+
+    return read_doctitles
 
 #///////////////////////////////////////////////////////////////////////////////
 def pimydoc(args, docsrc):
@@ -782,14 +804,18 @@ def pimydoc(args, docsrc):
         ____________________________________________________________________
 
         ARGUMENTS :
-        • args                      : (argparse.Namespace) args from the
+        ▪ args                      : (argparse.Namespace) args from the
                                       commande line.
-        • docsrc                    : (DocumentationSource object) doc content
+        ▪ docsrc                    : (DocumentationSource object) doc content
 
         no RETURNED VALUE
     """
     number_of_files = 0
     number_of_discarded_files = 0
+
+    # dict : (str)doctitle->(bool)has the doctile been read ?
+    # this dict is updated by pimydoc_a_file().
+    read_doctitles = dict(zip(docsrc.keys(), [False,]*len(docsrc)))
 
     for dirpath, _, filenames in os.walk(normpath(args.sourcepath)):
         for filename in filenames:
@@ -801,12 +827,22 @@ def pimydoc(args, docsrc):
                     logging.info("- discarded the documentation source file '%s'", fullname)
                     number_of_discarded_files += 1
                 else:
-                    pimydoc_a_file(fullname, docsrc,
-                                   args.remove, args.securitymode)
+                    read_doctitles = pimydoc_a_file(fullname, docsrc,
+                                                    args.remove, args.securitymode,
+                                                    read_doctitles)
             else:
                 number_of_discarded_files += 1
                 if args.vvv is True or args.verbose == 2:
                     logging.info("- discarded '%s'", fullname)
+
+    # ----------------------------------------------------------
+    # are they doctitle defined in the documentation source file
+    # not read in the source target ?
+    for doctitle in read_doctitles:
+        if read_doctitles[doctitle] is False:
+            logging.info("!!! beware : the doctitle '%s' is defined " \
+                         "in the documentation source " \
+                         "file but never appears in the source directory.", doctitle)
 
     logging.info("Read %s file(s), discarded %s file(s), %s file(s) may have been modified.",
                  number_of_files,
