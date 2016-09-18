@@ -396,9 +396,14 @@ def download_default_pimydoc():
 class DocumentationSource(dict):
     """
         DocumentationSource class
+
+        The settings, the doctitles and the documentation are stored in the
+        documentation source file.
         ________________________________________________________________________
 
-        self.errors = [] a list of str
+        Use this class to read the documentation source file.
+
+        dict: (str)doc title -> a list of (str) lines.
         ________________________________________________________________________
 
         class attributes : -
@@ -561,6 +566,9 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
 
         no RETURNED VALUE
     """
+
+    # dict : (str)doctitle->(bool)has the doctile been read ?
+    read_doctitles = dict(zip(docsrc.keys(), [False,]*len(docsrc)))
 
     #...........................................................................
     def rewrite_new_targetfile__line(newtargetfile, new_docline, last_linefeed):
@@ -726,6 +734,7 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
         for doctitle in docsrc:
             if doctitle in line:
                 lines_with_trigger[linenumber] = doctitle
+                read_doctitles[doctitle] = True
 
     # -------------
     # backup file :
@@ -747,6 +756,15 @@ def pimydoc_a_file(targetfile_name, docsrc, just_remove_pimydoc_lines, securitym
     # remove backup file :
     if securitymode is False:
         os.remove(targetfile_name+"_pimydoc_backup")
+
+    # ----------------------------------------------------------
+    # are they doctitle defined in the documentation source file
+    # not read in the source target ?
+    for doctitle in read_doctitles:
+        if read_doctitles[doctitle] is False:
+            logging.info("beware : the doctitle '%s' is defined " \
+                         "in the documentation source " \
+                         "file but never appears in the source directory.", doctitle)
 
     logging.debug("--- done with %s", targetfile_name)
 
