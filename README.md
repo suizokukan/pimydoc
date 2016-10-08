@@ -329,6 +329,14 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 	
 #(7) history / future versions
 
+##v 0.2.7(beta) (2016_10_08) fixed a message in rewrite_new_targetfile()
+
+    • fixed a message in rewrite_new_targetfile()
+
+    • unittests : 2 tests (passed) 
+    • raw Pylint invocation : 10.0/10.0 for all scripts.
+    • version packaged and sent to Pypi (https://pypi.python.org/pypi/Pimydoc)
+        
 ##v 0.2.6(beta) (2016_09_18) warning for doctitles defined but never read
 
     • a warning appears if a doctitle is defined
