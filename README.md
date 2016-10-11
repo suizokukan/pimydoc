@@ -5,8 +5,11 @@ Pimydoc : [P]lease [i]nsert my doc[umentation]
 A Python3/GPLv3/OSX-Linux-Windows/CLI project, using no additional modules
 than the ones installed with Python3.
 
-Insert documentation in text files and update it.
+Insert documentation in (text|code) files and update it.
 
+This project is written in Python but the files to be documented may be
+written in any language : Python, C++, Java...
+  
 Example :
 
     -> inside "pimydoc", documentation source file.
@@ -17,7 +20,15 @@ Example :
     [ressource::002]
     Another interesting ressource.
 
-    -> inside a source file :
+     -> inside a (C++) source file :
+    void foo(arg):
+        /*
+           ressource::001
+        */
+        // ressource::002
+        func("...")
+
+    -> inside a (Python) source file :
     def foo(arg):
         """
            ressource::001
@@ -25,8 +36,18 @@ Example :
         # ressource::002
         print("...")
 
-The source file becomes :
+The source files become :
 
+    void foo(arg):
+        /*
+           ressource::001
+           ¤ An interesting ressource.
+
+        */
+        // ressource::002
+        // ¤ An interesting ressource.
+        func("...")
+    
     def foo(arg):
         """
            ressource::001
@@ -35,7 +56,7 @@ The source file becomes :
         # ressource::002
         # ¤ another interesting ressource.
         print("...")
-    
+        
 #(2) purpose and file format
 
 Pimydoc inserts in source files the text paragraphs stored in "pimydoc", the
