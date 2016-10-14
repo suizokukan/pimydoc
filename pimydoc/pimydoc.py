@@ -824,8 +824,13 @@ def pimydoc(args, docsrc):
 
             if re.search(SETTINGS["REGEX_SOURCE_FILTER"], fullname):
                 if fullname == args.docsrcfile:
-                    logging.info("- discarded the documentation source file '%s'", fullname)
+                    logging.info("- discarded the documentation source file '%s'",
+                                 fullname)
                     number_of_discarded_files += 1
+                elif fullname == args.docsrcfile+"~":
+                    logging.info("- discarded the backup of the documentation source file '%s'",
+                                 fullname)
+                    number_of_discarded_files += 1                    
                 else:
                     read_doctitles = pimydoc_a_file(fullname, docsrc,
                                                     args.remove, args.securitymode,
