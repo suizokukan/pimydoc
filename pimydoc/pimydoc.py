@@ -113,7 +113,7 @@ PROJECT_NAME = "Pimydoc"
 
 # see https://www.python.org/dev/peps/pep-0440/
 # e.g. 0.1.2.dev1, 0.0.6a0
-PROJECT_VERSION = "0.2.8"
+PROJECT_VERSION = "0.2.9"
 
 # constants required by Pypi.
 __projectname__ = PROJECT_NAME
@@ -750,14 +750,14 @@ def pimydoc_a_file(targetfile_name,
         with open(targetfile_name, 'rt', encoding="utf-8") as target_file:
             targetcontent = target_file.readlines()
     except FileNotFoundError as error:
-        logging.error("! Can't read the content of the file '%s'", targetfile_name)
-        logging.error("! Error returned by Python : (FileNotFoundError) "+str(error))
-        logging.error("! Skipping this file.")
+        logging.debug("! Can't read the content of the file '%s'", targetfile_name)
+        logging.debug("! Error returned by Python : (FileNotFoundError) "+str(error))
+        logging.debug("! Skipping this file.")
         return read_doctitles
     except UnicodeDecodeError as error:
-        logging.error("! Can't read the content of the file '%s'", targetfile_name)
-        logging.error("! Error returned by Python : (UnicodeDecodeError) "+str(error))
-        logging.error("! Skipping this file.")
+        logging.debug("! Can't read the content of the file '%s'", targetfile_name)
+        logging.debug("! Error returned by Python : (UnicodeDecodeError) "+str(error))
+        logging.debug("! Skipping this file.")
         return read_doctitles
 
     # ---------------------------
