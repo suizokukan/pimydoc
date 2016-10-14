@@ -720,7 +720,7 @@ def pimydoc_a_file(targetfile_name,
                     _, last_linefeed = remove_and_return_linefeed(line)
 
                     if just_remove_pimydoc_lines is False:
-                        logging.info("+ doc to add/updat in '%s'; doctitle='%s'",
+                        logging.info("+ doc to add/update in '%s'; doctitle='%s'",
                                      targetfile_name, doc_title)
 
                         # what is the "startstring", i.e. the string in <line>
