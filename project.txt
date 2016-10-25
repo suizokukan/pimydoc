@@ -1,0 +1,15 @@
+v 0.2.9 [2016_10_25] skipped the backup of the documentation source file
+
+    • modified pimydoc():
+      the backup of the documentation source file (e.g. "pimydoc~") is skipped and
+      won't be modified by the script.
+    • modified rewrite_new_targetfile() :
+      The errors returned by Python are now logged as debug messages, not as error
+      messages anymore.
+    • improved the documentation
+    • fixed a useless space in setup.py
+    • new file : project.txt
+
+    • unittests : 2 tests (passed)
+    • Pylint invocation : 10.0 for all .py files.
+
