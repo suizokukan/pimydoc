@@ -12,6 +12,10 @@ REGEX_SOURCE_FILTER : .+py$
 REGEX_FIND_DOCTITLE : ^\[(?P<doctitle>.+)\]$
 
 ### "|_|_" isn't the same as "|_|" (spaces are replaced by _)
+### e.g. DO NOT USE " or _ for Python files !
+### e.g. DO NOT USE ++ for C++ files !
+###
+### you may use “ or ”.
 STARTSYMB_IN_DOC :| |
     
 ### 0 if the tabulations are not replaced by spaces in doclines.
